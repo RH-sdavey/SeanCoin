@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{% block crumbs %}
+  <li class="breadcrumb-item active">{{ block_number }}</li>
+{% endblock %}
+
+{% block body %}
+    <section class="section">
+    <h5 class="card-title">Block Number: {{ block_number }} ({{ block_hash }}) </h5>
+      <div class="row">
+        <div class="col-lg-3">
+          <div class="card">
+            <div class="card-body">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Gas Limit</th>
+                    <th scope="col">Gas Used</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{ block_obj.gasLimit }}</td>
+                    <td>{{ block_obj.gasUsed }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-9">
+          <div class="card">
+            <div class="card-body">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Miner</th>
+                    <th scope="col">Difficulty</th>
+                    <th scope="col">Total Difficulty</th>
+                    <th scope="col">Timestamp</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{ block_obj.miner }}</td>
+                    <td>{{ block_obj.difficulty }}</td>
+                    <td>{{ block_obj.totalDifficulty }}</td>
+                    <td>{{ block_obj.timestamp }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="card">
+            <div class="card-body">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">mixHash</th>
+                    <th scope="col">parentHash</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{ block_obj.mixHash[:30] }}</td>
+                    <td>{{ block_obj.parentHash[:30] }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="card">
+            <div class="card-body">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">sha3Uncles</th>
+                    <th scope="col">stateRoot</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{ block_obj.sha3Uncles[:30] }}</td>
+                    <td>{{ block_obj.stateRoot[:30] }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+       <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <h5 class="card-title">Transactions </h5>
+            <div class="card-body">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">From</th>
+                    <th scope="col">To</th>
+                    <th scope="col">Gas</th>
+                    <th scope="col">Gas Price</th>
+                    <th scope="col">Value</th>
+                    <th scope="col">Link</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in txs %}
+                  <tr>
+                    <td>{{ item.from }}</td>
+                    <td>{{ item.to }}</td>
+                    <td>{{ item.gas }}</td>
+                    <td>{{ item.gasPrice }}</td>
+                    <td>{{ item.value }}</td>
+                    <td><a href="/block/{{ block_number }}/transactions/{{ item.transactionIndex }}" class="btn btn-primary">Details</a></td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}

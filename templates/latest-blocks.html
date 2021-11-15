@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block crumbs %}
+  <li class="breadcrumb-item active">Latest</li>
+{% endblock %}
+
+{% block body %}
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Last {{ data|length }} Blocks</h5>
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Number</th>
+                    <th scope="col">Hash</th>
+                    <th scope="col">Miner</th>
+                    <th scope="col">TimeStamp</th>
+                    <th scope="col">#Transactions</th>
+                    <th scope="col">Link</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for item in data %}
+                  <tr>
+                    <td>{{ item.number }}</td>
+                    <td>{{ item.hash }}</td>
+                    <td>{{ item.miner }}</td>
+                    <td>{{ item.timestamp }}</td>
+                    <td>{{ item.transactions|length }}</td>
+                    <td><a href="/block/{{ item.number }}" class="btn btn-primary">Details</a></td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}
+
+
+
+
