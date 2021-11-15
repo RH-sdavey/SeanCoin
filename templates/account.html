@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block crumbs %}
-  <li class="breadcrumb-item active">{{ txs.blockNumber }} / {{ txs.transactionIndex }} ({{ txs.hash }})</li>
+  <li class="breadcrumb-item active"> Account / {{ account }}</li>
 {% endblock %}
 
 {% block body %}
@@ -18,17 +18,10 @@
                   </tr>
                 </thead>
                 <tbody>
-                  {% for key, value in txs.items() %}
-
                   <tr>
-                    <td>{{ key }}</td>
-                    {% if key in ["from", "to"] %}
-                      <td><a href="{{ url_for('account', account=txs[key]) }}">{{ value }}</a></td>
-                    {% else %}
-                      <td>{{ value }}</td>
-                    {% endif %}
+                      <td>Balance (Eth)</td>
+                      <td>{{ balance }}</td>
                   </tr>
-                  {% endfor %}
                 </tbody>
               </table>
             </div>

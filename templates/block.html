@@ -114,8 +114,8 @@
                 <tbody>
                   {% for item in txs %}
                   <tr>
-                    <td>{{ item.from }}</td>
-                    <td>{{ item.to }}</td>
+                    <td><a href="{{ url_for('account', account=item.from) }}">{{ item.from }}</a></td>
+                    <td><a href="{{ url_for('account', account=item.to) }}">{{ item.to }}</a></td>
                     <td>{{ item.gas }}</td>
                     <td>{{ item.gasPrice }}</td>
                     <td>{{ item.value }}</td>

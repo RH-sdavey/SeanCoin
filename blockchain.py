@@ -91,50 +91,32 @@ class Block:
         :param full_transactions:
         :return:
         """
-        last_50 = []
+        last_n = []
         latest_b_num = self.blockchain.web3.eth.get_block_number()
         for i in range(n):
             block = self.blockchain.web3.eth.getBlock(latest_b_num - i, full_transactions=full_transactions)
             json_block = json.loads(json.dumps(block, cls=HexJsonEncoder))
-            last_50.append(json_block)
-        return last_50
+            last_n.append(json_block)
+        return last_n
 
-    def transaction_factory(self, index):
+
+class Account:
+    def __init__(self, blockchain: BlockChain, account=None):
+        self.blockchain = blockchain
+        self.account = account
+        self.balance = self.get_balance()
+
+    def get_balance(self) -> str:
         """
-
+        TODO
+        :param account:
         :return:
         """
-        return Transaction(self, index)
-
-
-class Transaction:
-    """Object representing one transaction instance from a Block"""
-
-    def __init__(self, block: Block, txs_index):
-        self.block = block
-        self.txs_index = txs_index
-
-
-#         def get_transactions(self):
-#             return self.outer_instance['transactions']
-#
-#         def get_transaction_count(self):
-#             return self.outer_instance.blockchain.get_block_transaction_count(self.outer_instance['number'])
-#
-#         def get_trans_ids_by_block_id(self, block_id):
-#             try:
-#                 return self.outer_instance.get_block(block_id)['transactions']
-#             except (BlockNotFound, ValueError) as e:
-#                 raise Exception("Block ID does not exist, or invalid ID format:\n", e)
-#
-#         def get_trans_by_index(self, index):
-#             for transact in self.transactions:
-#                 if transact['transactionIndex'] == index:
-#                     return transact
-
-
-bc = BlockChain()
-last_40 = bc.block_factory().get_last_n_blocks(5)
+        long_balance = str(self.blockchain.web3.eth.get_balance(self.account))
+        if len(long_balance) < 18:
+            len_diff = 18 - len(long_balance)
+            long_balance = long_balance.zfill(18 + len_diff + 1)
+        return f"{long_balance[:-18]}.{long_balance[-18:]}"
 
 
 

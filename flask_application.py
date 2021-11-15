@@ -1,7 +1,8 @@
 from flask import Flask, render_template
 
-from blockchain import bc
+from blockchain import BlockChain, Account
 
+bc = BlockChain()
 app = Flask(__name__)
 
 
@@ -15,7 +16,6 @@ def index():
                            data=list_of_dicts)
 
 
-@app.route('/block/')
 @app.route('/block/<int:page>')
 def block_page(page):
     block = bc.block_factory(page).get_block()
@@ -33,3 +33,12 @@ def txs_page(page, tx):
     for transaction in block['transactions']:
         if transaction['transactionIndex'] == tx:
             return render_template('transactions.html', txs=transaction)
+
+
+@app.route('/account/<string:account>')
+def account(account):
+    account = Account(bc, account)
+    balance = account.get_balance()
+    return render_template('account.html',
+                           account=account.account,
+                           balance=balance)
