@@ -4,12 +4,42 @@
   <li class="breadcrumb-item active">Latest</li>
 {% endblock %}
 
+
 {% block body %}
     <section class="section">
+<div class="jumbotron index-jumbo">
+  <p class="lead">This is a tool to explore the Ethereum Blockchain (Work In Progress)</p>
+  <p class="my-5"></p>
+  <ul>
+    <li>you can see the individual blocks as they are mined and also the details of the transactions in each block</li>
+    <li><a href="https://rh-sdavey.github.io/sean_portfolio/">Created by: <i class="bi bi-emoji-neutral"></i> Sean Davey 2021</a></li>
+    <li><a href="https://github.com/RH-sdavey/SeanCoin">Github Repo:<i class="bi bi-github"></i></a></li>
+  </ul>
+  <hr class="my-4">
+</div>
       <div class="row">
+
+
         <div class="col-lg-12">
+
           <div class="card">
             <div class="card-body">
+            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+              <div class="btn-group" role="group">
+                <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                  # of blocks
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                  <li><a class="dropdown-item" href="{{ url_for('index_val', num_blocks=5) }}">5</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('index_val', num_blocks=10) }}">10</a></li>
+                  <div class="dropdown-divider"></div>
+                  <li><a class="dropdown-item" href="{{ url_for('index_val', num_blocks=20) }}">20</a></li>
+                  <div class="dropdown-divider"></div>
+                  <li><a class="dropdown-item" href="{{ url_for('index_val', num_blocks=50) }}">50</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('index_val', num_blocks=100) }}">100 ( v.slow)</a></li>
+                </ul>
+              </div>
+            </div>
               <h5 class="card-title">Last {{ data|length }} Blocks</h5>
               <table class="table table-striped">
                 <thead>
@@ -27,10 +57,10 @@
                   <tr>
                     <td>{{ item.number }}</td>
                     <td>{{ item.hash }}</td>
-                    <td>{{ item.miner }}</td>
+                    <td><a href="{{ url_for('account', account=item.miner) }}">{{ item.miner }}</a></td>
                     <td>{{ item.timestamp }}</td>
                     <td>{{ item.transactions|length }}</td>
-                    <td><a href="/block/{{ item.number }}" class="btn btn-primary">Details</a></td>
+                    <td><a href="/block/{{ item.number }}" class="btn btn-info">Details</a></td>
                   </tr>
                 {% endfor %}
                 </tbody>

@@ -28,14 +28,14 @@
       <i class="bi bi-list toggle-sidebar-btn" style="margin-right:8em"></i>
       <a href="{{ url_for('index') }}" class="logo d-flex align-items-center">
       <img src="{{ url_for('static', filename='assets/img/logo.png') }}" alt="">
-      <span class="d-none d-lg-block">SeanCoin</span>
+      <span class="d-none d-lg-block">SeanThereum</span>
       </a>
     </div>
   </header>
   <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
       <li class="nav-item">
-        <a class="nav-link collapsed" href="index.html">
+        <a class="nav-link collapsed" href="{{ url_for('index') }}">
           <i class="bi bi-grid"></i>
           <span>Block Explorer</span>
         </a>

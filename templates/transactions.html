@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block crumbs %}
-  <li class="breadcrumb-item active">{{ txs.blockNumber }} / {{ txs.transactionIndex }} ({{ txs.hash }})</li>
+  <li class="breadcrumb-item active">Block[{{ txs.blockNumber }}] / Transaction[{{ txs.transactionIndex }}({{ txs.hash }})]</li>
 {% endblock %}
 
 {% block body %}

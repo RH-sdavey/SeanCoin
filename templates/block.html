@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block crumbs %}
-  <li class="breadcrumb-item active">{{ block_number }}</li>
+  <li class="breadcrumb-item active">Block[{{ block_number }}]</li>
 {% endblock %}
 
 {% block body %}
@@ -42,7 +42,7 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td>{{ block_obj.miner }}</td>
+                    <td><a href="{{ url_for('account', account=block_obj.miner) }}">{{ block_obj.miner }}</a></td>
                     <td>{{ block_obj.difficulty }}</td>
                     <td>{{ block_obj.totalDifficulty }}</td>
                     <td>{{ block_obj.timestamp }}</td>

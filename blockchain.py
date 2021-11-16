@@ -106,17 +106,29 @@ class Account:
         self.account = account
         self.balance = self.get_balance()
 
+    @staticmethod
+    def normalize_balance(balance: str) -> str:
+        """
+
+        :param balance:
+        :return:
+        """
+        if balance == "0":
+            return balance
+        if len(balance) < 18:
+            len_diff = 18 - len(balance)
+            balance = balance.zfill(18 + len_diff + 1)
+        return f"{balance[:-18]}.{balance[-18:]}"
+
     def get_balance(self) -> str:
         """
         TODO
         :param account:
         :return:
         """
-        long_balance = str(self.blockchain.web3.eth.get_balance(self.account))
-        if len(long_balance) < 18:
-            len_diff = 18 - len(long_balance)
-            long_balance = long_balance.zfill(18 + len_diff + 1)
-        return f"{long_balance[:-18]}.{long_balance[-18:]}"
+        balance = str(self.blockchain.web3.eth.get_balance(self.account))
+        return self.normalize_balance(balance)
+
 
 
 

@@ -8,9 +8,16 @@ app = Flask(__name__)
 
 @app.route('/')
 @app.route('/index.html')
-@app.route('/latest-blocks.html')
 def index():
-    last_n = bc.block_factory().get_last_n_blocks(20)
+    last_n = bc.block_factory().get_last_n_blocks(5)
+    list_of_dicts = [dict(item) for item in last_n]
+    return render_template('latest-blocks.html', display=list_of_dicts,
+                           data=list_of_dicts)
+
+
+@app.route('/index.html/<int:num_blocks>')
+def index_val(num_blocks=20):
+    last_n = bc.block_factory().get_last_n_blocks(num_blocks)
     list_of_dicts = [dict(item) for item in last_n]
     return render_template('latest-blocks.html', display=list_of_dicts,
                            data=list_of_dicts)
