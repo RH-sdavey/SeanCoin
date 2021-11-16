@@ -18,14 +18,15 @@
                   </tr>
                 </thead>
                 <tbody>
-                  {% for key, value in txs.items() %}
-
+                  {% for k, v in txs.items() %}
                   <tr>
-                    <td>{{ key }}</td>
-                    {% if key in ["from", "to"] %}
-                      <td><a href="{{ url_for('account', account=txs[key]) }}">{{ value }}</a></td>
-                    {% else %}
+                    <td>{{ k }}</td>
+                    {% if k in ["from", "to"] %}
+                      <td><a href="{{ url_for('account', account=txs[k]) }}">{{ v }}</a></td>
+                    {% elif k == "value" %}
                       <td>{{ value }}</td>
+                    {% else %}
+                      <td>{{ v }}</td>
                     {% endif %}
                   </tr>
                   {% endfor %}

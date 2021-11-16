@@ -113,12 +113,13 @@ class Account:
         :param balance:
         :return:
         """
+        balance = str(balance)
         if balance == "0":
             return balance
         if len(balance) < 18:
             len_diff = 18 - len(balance)
             balance = balance.zfill(18 + len_diff + 1)
-        return f"{balance[:-18]}.{balance[-18:]}"
+        return f"{balance[:-18]}.{balance[-18:]}".rstrip("0")
 
     def get_balance(self) -> str:
         """
@@ -128,26 +129,3 @@ class Account:
         """
         balance = str(self.blockchain.web3.eth.get_balance(self.account))
         return self.normalize_balance(balance)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
