@@ -53,8 +53,8 @@
                 {% for item in data %}
                   <tr>
                     <td>{{ item.number }}</td>
-                    <td>{{ item.hash }}</td>
-                    <td><a href="{{ url_for('account', account=item.miner) }}">{{ item.miner }}</a></td>
+                    <td>{{ item.hash|truncate(20) }}</td>
+                    <td><a href="{{ url_for('account', account=item.miner) }}">{{ item.miner|truncate(20) }}</a></td>
                     <td>{{ item.timestamp }}</td>
                     <td>{{ item.transactions|length }}</td>
                     <td><a href="/block/{{ item.number }}" class="btn btn-info">Details</a></td>

@@ -1,4 +1,4 @@
-from flask_application import app
+from flask_application import seanCoin
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    seanCoin.run(debug=True)

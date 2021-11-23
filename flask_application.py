@@ -5,11 +5,11 @@ from web3.exceptions import BlockNotFound
 from blockchain import BlockChain, Account
 
 bc = BlockChain()
-app = Flask(__name__)
+seanCoin = Flask(__name__)
 
 
-@app.route('/')
-@app.route('/index.html')
+@seanCoin.route('/')
+@seanCoin.route('/index.html')
 def index():
     last_n = bc.block_factory().get_last_n_blocks(5)
     list_of_dicts = [dict(item) for item in last_n]
@@ -17,7 +17,7 @@ def index():
                            data=list_of_dicts)
 
 
-@app.route('/index.html/<int:num_blocks>')
+@seanCoin.route('/index.html/<int:num_blocks>')
 def index_val(num_blocks=20):
     last_n = bc.block_factory().get_last_n_blocks(num_blocks)
     list_of_dicts = [dict(item) for item in last_n]
@@ -25,7 +25,7 @@ def index_val(num_blocks=20):
                            data=list_of_dicts)
 
 
-@app.route('/block/<int:page>')
+@seanCoin.route('/block/<int:page>')
 def block_page(page):
     latest_block = bc.block_factory().get_block()
     try:
@@ -49,7 +49,7 @@ def block_page(page):
         return render_template('ohno.html')
 
 
-@app.route('/block/<int:page>/transactions/<int:tx>')
+@seanCoin.route('/block/<int:page>/transactions/<int:tx>')
 def txs_page(page, tx):
     block = bc.block_factory(page).get_block()
     for transaction in block['transactions']:
@@ -59,7 +59,7 @@ def txs_page(page, tx):
                                    value=Account.normalize_balance(transaction['value']))
 
 
-@app.route('/account/<string:account>')
+@seanCoin.route('/account/<string:account>')
 def account(account):
     account_obj = Account(bc, account)
     balance = account_obj.get_balance()

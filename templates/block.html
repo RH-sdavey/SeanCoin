@@ -57,7 +57,7 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a href="{{ url_for('account', account=block_obj.miner) }}">{{ block_obj.miner }}</a></td>
+                    <td><a href="{{ url_for('account', account=block_obj.miner) }}">{{ block_obj.miner|truncate(20) }}</a></td>
                     <td>{{ block_obj.difficulty }}</td>
                     <td>{{ block_obj.totalDifficulty }}</td>
                     <td>{{ block_obj.timestamp }}</td>
@@ -122,15 +122,15 @@
                     <th scope="col">To</th>
                     <th scope="col">Gas</th>
                     <th scope="col">Gas Price</th>
-                    <th scope="col">Value</th>
+                    <th scope="col">Value (Eth)</th>
                     <th scope="col">Link</th>
                   </tr>
                 </thead>
                 <tbody>
                   {% for item in txs %}
                   <tr>
-                    <td><a href="{{ url_for('account', account=item.from) }}">{{ item.from }}</a></td>
-                    <td><a href="{{ url_for('account', account=item.to) }}">{{ item.to }}</a></td>
+                    <td><a href="{{ url_for('account', account=item.from) }}">{{ item.from|truncate(20) }}</a></td>
+                    <td><a href="{{ url_for('account', account=item.to) }}">{{ item.to|truncate(20) }}</a></td>
                     <td>{{ item.gas }}</td>
                     <td>{{ item.gasPrice }}</td>
                     <td>{{ normalize_balance(item.value) }}</td>
