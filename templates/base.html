@@ -40,6 +40,12 @@
           <span>Block Explorer</span>
         </a>
       </li>
+            <li class="nav-item">
+        <a class="nav-link collapsed" href="{{ url_for('price_charts') }}">
+          <i class="bi bi-grid"></i>
+          <span>Price Charts</span>
+        </a>
+      </li>
     </ul>
   </aside>
   <main id="main" class="main">
@@ -69,6 +75,7 @@
   <script src="{{ url_for('static', filename='assets/vendor/apexcharts/apexcharts.min.js') }}"></script>
   <script src="{{ url_for('static', filename='assets/vendor/echarts/echarts.min.js') }}"></script>
   <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/js/gauge.min.js') }}"></script>
 
 
 </body>

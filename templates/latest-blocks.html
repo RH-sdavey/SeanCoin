@@ -45,7 +45,8 @@
                     <th scope="col">Hash</th>
                     <th scope="col">Miner</th>
                     <th scope="col">TimeStamp</th>
-                    <th scope="col">#Transactions</th>
+                    <th scope="col"># Transactions</th>
+                    <th scope="col">% Transactions</th>
                     <th scope="col">Link</th>
                   </tr>
                 </thead>
@@ -57,8 +58,41 @@
                     <td><a href="{{ url_for('account', account=item.miner) }}">{{ item.miner|truncate(20) }}</a></td>
                     <td>{{ item.timestamp }}</td>
                     <td>{{ item.transactions|length }}</td>
+                    <td><div id="barchart_{{ item.number }}"></div></td>
                     <td><a href="/block/{{ item.number }}" class="btn btn-info">Details</a></td>
                   </tr>
+                <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                  new ApexCharts(document.querySelector("#barchart_{{ item.number }}"), {
+                    series: [{
+                      data: [{{ item.perc_of_total_trans }}]
+                    }],
+                    chart: {
+                      type: 'bar',
+                      height: 100,
+                      width: 600,
+                          toolbar: {
+                            show: false
+                          }
+                    },
+                    plotOptions: {
+                      bar: {
+                        horizontal: true,
+                        barWidth: '100%'
+                      }
+                    },
+                    dataLabels: {
+                      enabled: false
+                    },
+                    xaxis: {
+                      categories: [''],
+                    },
+                    yaxis: {
+                      max: 100
+                    }
+                  }).render();
+                });
+              </script>
                 {% endfor %}
                 </tbody>
               </table>
@@ -67,6 +101,7 @@
         </div>
       </div>
     </section>
+
 {% endblock %}
 
 
