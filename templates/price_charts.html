@@ -1,11 +1,349 @@
 {% extends 'base.html' %}
 
+{% block mainTitleSpan %}
+    <h1>Crypto Price Charts</h1>
+{% endblock %}
+
+
 {% block crumbs %}
-  <li class="breadcrumb-item active">Eth Price Charts</li>
 {% endblock %}
 
 {% block body %}
-    <section class="section">
-        <h5 class="card-title">Ethereum Price Charts </h5>
-    </section>
+    <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Crypto Data Since 2020</h5>
+              <div id="priceChart"></div>
+              <div id="volumeChart"></div>
+              <div id="priceDiffChart"></div>
+              <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                  const series = {
+                    "dates": {{ date_range|safe }},
+                    "eth": {
+                      "prices": {{ closing_prices['eth'] }},
+                      "volume": {{ volume['eth'] }},
+                      "open_close_diff": {{ open_close_diff['eth']|safe }}
+                    },
+                    "btc": {
+                      "prices": {{ closing_prices['btc']  }},
+                      "volume": {{ volume['btc'] }},
+                      "open_close_diff": {{ open_close_diff['btc']|safe }}
+                    },
+                    "lrc": {
+                      "prices": {{ closing_prices['lrc']  }},
+                       "volume": {{ volume['lrc'] }},
+                       "open_close_diff": {{ open_close_diff['lrc']|safe }}
+                    },
+                    "bnb": {
+                      "prices": {{ closing_prices['bnb']  }},
+                       "volume": {{ volume['bnb'] }},
+                       "open_close_diff": {{ open_close_diff['bnb']|safe }}
+                    },
+                    "usdt": {
+                      "prices": {{ closing_prices['usdt']  }},
+                       "volume": {{ volume['usdt'] }},
+                       "open_close_diff": {{ open_close_diff['usdt']|safe }}
+                    },
+                    "sol": {
+                      "prices": {{ closing_prices['sol']  }},
+                       "volume": {{ volume['sol'] }},
+                       "open_close_diff": {{ open_close_diff['sol']|safe }}
+                    },
+                    "ada": {
+                      "prices": {{ closing_prices['ada']  }},
+                       "volume": {{ volume['ada'] }},
+                       "open_close_diff": {{ open_close_diff['ada']|safe }}
+                    },
+                    "dot": {
+                      "prices": {{ closing_prices['dot']  }},
+                       "volume": {{ volume['dot'] }},
+                       "open_close_diff": {{ open_close_diff['dot']|safe }}
+                    },
+                    "doge": {
+                      "prices": {{ closing_prices['doge']  }},
+                       "volume": {{ volume['doge'] }},
+                       "open_close_diff": {{ open_close_diff['doge']|safe }}
+                    },
+                    "shib": {
+                      "prices": {{ closing_prices['shib']  }},
+                       "volume": {{ volume['shib'] }},
+                       "open_close_diff": {{ open_close_diff['shib']|safe }}
+                    },
+                    "ltc": {
+                      "prices": {{ closing_prices['ltc']  }},
+                       "volume": {{ volume['ltc'] }},
+                       "open_close_diff": {{ open_close_diff['ltc']|safe }}
+                    },
+                    "matic": {
+                      "prices": {{ closing_prices['matic']  }},
+                       "volume": {{ volume['matic'] }},
+                       "open_close_diff": {{ open_close_diff['matic']|safe }}
+                    },
+                    "mana": {
+                      "prices": {{ closing_prices['mana']  }},
+                       "volume": {{ volume['mana'] }},
+                       "open_close_diff": {{ open_close_diff['mana']|safe }}
+                    },
+                  }
+                  new ApexCharts(document.querySelector("#priceChart"), {
+                    series: [
+                        {
+                          name: "BTC PRICE",
+                          data: series.btc.prices
+                        },
+                        {
+                          name: "ETH PRICE",
+                          data: series.eth.prices
+                        },
+                        {
+                          name: "LRC PRICE",
+                          data: series.lrc.prices
+                        },
+                        {
+                          name: "bnb PRICE",
+                          data: series.bnb.prices
+                        },
+                        {
+                          name: "usdt PRICE",
+                          data: series.usdt.prices
+                        },
+                        {
+                          name: "sol PRICE",
+                          data: series.sol.prices
+                        },
+                        {
+                          name: "ada PRICE",
+                          data: series.ada.prices
+                        },
+                        {
+                          name: "dot PRICE",
+                          data: series.dot.prices
+                        },
+                        {
+                          name: "doge PRICE",
+                          data: series.doge.prices
+                        },
+                        {
+                          name: "shib PRICE",
+                          data: series.shib.prices
+                        },
+                        {
+                          name: "ltc PRICE",
+                          data: series.ltc.prices
+                        },
+                        {
+                          name: "matic PRICE",
+                          data: series.matic.prices
+                        },
+                        {
+                          name: "mana PRICE",
+                          data: series.mana.prices
+                        },
+                    ],
+                    chart: {
+                      type: 'area',
+                      height: 350,
+                      zoom: {
+                        enabled: false
+                      }
+                    },
+                    dataLabels: {
+                      enabled: false
+                    },
+                    stroke: {
+                      curve: 'straight'
+                    },
+                    subtitle: {
+                      text: 'Price',
+                      align: 'left'
+                    },
+
+                    xaxis: {
+                      type: 'datetime',
+                      categories: series.dates
+                    },
+                    yaxis: {
+                      opposite: true
+                    },
+                    legend: {
+                      horizontalAlign: 'left'
+                    }
+                  }).render();
+                  new ApexCharts(document.querySelector("#volumeChart"), {
+                    series: [
+                        {
+                          name: "BTC VOLUME",
+                          data: series.btc.volume
+                        },
+                        {
+                          name: "ETH VOLUME",
+                          data: series.eth.volume
+                        },
+                        {
+                          name: "LRC VOLUME",
+                          data: series.lrc.volume
+                        },
+                        {
+                          name: "bnb VOLUME",
+                          data: series.bnb.volume
+                        },
+                        {
+                          name: "usdt VOLUME",
+                          data: series.usdt.volume
+                        },
+                        {
+                          name: "sol VOLUME",
+                          data: series.sol.volume
+                        },
+                        {
+                          name: "ada VOLUME",
+                          data: series.ada.volume
+                        },
+                        {
+                          name: "dot VOLUME",
+                          data: series.dot.volume
+                        },
+                        {
+                          name: "doge VOLUME",
+                          data: series.doge.volume
+                        },
+                        {
+                          name: "shib VOLUME",
+                          data: series.shib.volume
+                        },
+                        {
+                          name: "ltc VOLUME",
+                          data: series.ltc.volume
+                        },
+                        {
+                          name: "matic VOLUME",
+                          data: series.matic.volume
+                        },
+                        {
+                          name: "mana VOLUME",
+                          data: series.mana.volume
+                        },
+                    ],
+                    chart: {
+                      type: 'area',
+                      height: 350,
+                      zoom: {
+                        enabled: false
+                      }
+                    },
+                    dataLabels: {
+                      enabled: false
+                    },
+                    stroke: {
+                      curve: 'straight'
+                    },
+                    subtitle: {
+                      text: 'Volume',
+                      align: 'left'
+                    },
+
+                    xaxis: {
+                      type: 'datetime',
+                      categories: series.dates
+                    },
+                    yaxis: {
+                      opposite: true
+                    },
+                    legend: {
+                      horizontalAlign: 'left'
+                    }
+                  }).render();
+                new ApexCharts(document.querySelector("#priceDiffChart"), {
+                    series: [
+                        {
+                          name: "BTC CHANGE",
+                          data: series.btc.open_close_diff
+                        },
+                        {
+                          name: "ETH CHANGE",
+                          data: series.eth.open_close_diff
+                        },
+                        {
+                          name: "LRC CHANGE",
+                          data: series.lrc.open_close_diff
+                        },
+                        {
+                          name: "bnb CHANGE",
+                          data: series.bnb.open_close_diff
+                        },
+                        {
+                          name: "usdt CHANGE",
+                          data: series.usdt.open_close_diff
+                        },
+                        {
+                          name: "sol CHANGE",
+                          data: series.sol.open_close_diff
+                        },
+                        {
+                          name: "ada CHANGE",
+                          data: series.ada.open_close_diff
+                        },
+                        {
+                          name: "dot CHANGE",
+                          data: series.dot.open_close_diff
+                        },
+                        {
+                          name: "doge CHANGE",
+                          data: series.doge.open_close_diff
+                        },
+                        {
+                          name: "shib CHANGE",
+                          data: series.shib.open_close_diff
+                        },
+                        {
+                          name: "ltc CHANGE",
+                          data: series.ltc.open_close_diff
+                        },
+                        {
+                          name: "matic CHANGE",
+                          data: series.matic.open_close_diff
+                        },
+                        {
+                          name: "mana CHANGE",
+                          data: series.mana.open_close_diff
+                        },
+                    ],
+                    chart: {
+                      type: 'area',
+                      height: 350,
+                      zoom: {
+                        enabled: false
+                      }
+                    },
+                    dataLabels: {
+                      enabled: false
+                    },
+                    stroke: {
+                      curve: 'straight'
+                    },
+                    subtitle: {
+                      text: 'Price Change ($)',
+                      align: 'left'
+                    },
+                    xaxis: {
+                      type: 'datetime',
+                      categories: series.dates
+                    },
+                    yaxis: {
+                      opposite: true
+                    },
+                    legend: {
+                      horizontalAlign: 'left'
+                    }
+                  }).render();
+                });
+              </script>
+            </div>
+          </div>
+        </div>
+    </div>
+
+
 {% endblock %}

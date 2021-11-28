@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 
+{% block mainTitleSpan %}
+  <h1>Block Explorer</h1>
+{% endblock %}
+
+
 {% block crumbs %}
   <li class="breadcrumb-item active">Block[{{ block_number }}]</li>
 {% endblock %}
