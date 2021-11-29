@@ -30,9 +30,6 @@ def calc_perc_of_transactions(list_of_dicts):
             item['perc_of_total_trans'] = 0
     return total_txs, list_of_dicts
 
-# def calculate_open_close_diff(crypto):
-#     for
-
 
 @seanCoin.route('/')
 @seanCoin.route('/index.html')
@@ -103,8 +100,8 @@ def account(acc_id):
     )
 
 
-@seanCoin.route("/price-charts")
-def price_charts():
+@seanCoin.route("/crypto-charts")
+def crypto_charts():
     start = dt.datetime(2020, 1, 1)
     end = dt.datetime.now()
     date_range = pandas.date_range(start, end - dt.timedelta(days=1), freq='d').strftime("%d %b %Y").tolist()
@@ -187,8 +184,35 @@ def price_charts():
         "mana": [str(Decimal(cl) - Decimal(op)) for op, cl in list(zip(open_prices['mana'], closing_prices['mana']))],
     }
 
-    return render_template("price_charts.html",
+    return render_template("crypto_charts.html",
                            date_range=date_range,
                            closing_prices=closing_prices,
                            volume=volume,
-                           open_close_diff=open_close_diff)
+                           open_close_diff=open_close_diff,
+                           )
+
+
+@seanCoin.route("/coin-charts/<coin>")
+def coin_charts(coin):
+    start = dt.datetime(2020, 1, 1)
+    end = dt.datetime.now()
+    date_range = pandas.date_range(start, end - dt.timedelta(days=1), freq='d').strftime("%d %b %Y").tolist()
+    data = pdr.DataReader(coin, 'yahoo', start.strftime("%d %b %Y"), end.strftime("%d %b %Y"))
+
+    pass_dict = {
+        "name": coin,
+        "open": data['Open'].to_list(),
+        "close": data['Close'].to_list(),
+        "volume": data['Volume'].to_list(),
+        "diff": [str(Decimal(cl) - Decimal(op)) for op, cl in list(zip(data['Open'].to_list(), data['Close'].to_list()))]
+    }
+    return render_template("crypto_base.html",
+                           date_range=date_range,
+                           data=pass_dict)
+
+
+@seanCoin.route("/stonk-charts/<stonk>")
+def stonk_charts(stonk):
+    print(f"HERE: {stonk}")
+    return render_template("stonk_charts.html")
+
