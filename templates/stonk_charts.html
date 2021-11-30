@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block mainTitleSpan %}
-<h1>Crypto Price Charts {{ crypto }}</h1>
+<h1>Stonk Charts</h1>
 {% endblock %}
 
 
@@ -9,26 +9,138 @@
 {% endblock %}
 
 {% block body %}
-<div class="row">
+<div class="row container">
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">{{ data['name'] }} Since 2020</h5>
+
+                <ul class="nav nav-tabs d-flex" id="myTabjustified" role="tablist">
+                    <li class="nav-item flex-fill" role="presentation">
+                        <button class="nav-link w-100 active" id="home-tab" data-bs-toggle="tab"
+                                data-bs-target="#home-justified" type="button" role="tab" aria-controls="home"
+                                aria-selected="true">Company Info
+                        </button>
+                    </li>
+                    <li class="nav-item flex-fill" role="presentation">
+                        <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab"
+                                data-bs-target="#profile-justified" type="button" role="tab" aria-controls="profile"
+                                aria-selected="false">Current Stock Data
+                        </button>
+                    </li>
+                    <li class="nav-item flex-fill" role="presentation">
+                        <button class="nav-link w-100" id="contact-tab" data-bs-toggle="tab"
+                                data-bs-target="#contact-justified" type="button" role="tab" aria-controls="contact"
+                                aria-selected="false">Historical Data
+                        </button>
+                    </li>
+                    <li class="nav-item flex-fill" role="presentation">
+                        <button class="nav-link w-100" id="other1-tab" data-bs-toggle="tab"
+                                data-bs-target="#other1-justified" type="button" role="tab" aria-controls="other1"
+                                aria-selected="false">Financials
+                        </button>
+                    </li>
+                    <li class="nav-item flex-fill" role="presentation">
+                        <button class="nav-link w-100" id="other2-tab" data-bs-toggle="tab"
+                                data-bs-target="#other2-justified" type="button" role="tab" aria-controls="other2"
+                                aria-selected="false">OTHER2
+                        </button>
+                    </li>
+                </ul>
+                <div class="tab-content pt-2" id="myTabjustifiedContent">
+                    <div class="tab-pane fade show active" id="home-justified" role="tabpanel"
+                         aria-labelledby="home-tab">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for k, v in tab_data['company'].items() %}
+                            <tr>
+                                <td>{{ k|safe }}</td>
+                                <td>{{ v|safe }}</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade" id="profile-justified" role="tabpanel" aria-labelledby="profile-tab">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for k, v in tab_data['current_stock'].items() %}
+                            <tr>
+                                <td>{{ k|safe }}</td>
+                                <td>{{ v|safe }}</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade" id="contact-justified" role="tabpanel" aria-labelledby="contact-tab">
+                    </div>
+                    <div class="tab-pane fade" id="other1-justified" role="tabpanel" aria-labelledby="other1-tab">
+                    </div>
+                    <div class="tab-pane fade" id="other2-justified" role="tabpanel" aria-labelledby="other2-tab">
+                    </div>
+                </div><!-- End Default Tabs -->
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <div id="priceGauge"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
                 <div id="priceChart"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
                 <div id="diffChart"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
                 <div id="volumeChart"></div>
             </div>
         </div>
     </div>
 </div>
 
-
-
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         const series = {
-            "dates": {{ date_range|safe }},
             "coin": {
+              "dates": {{ data['date_range']|safe }},
               "name": "{{ data['name'] }}",
               "prices": {{ data['close'] }},
               "volume": {{ data['volume'] }},
@@ -45,7 +157,7 @@
         ],
         chart: {
           type: 'area',
-          height: 350,
+          height: 250,
           zoom: {
             enabled: false
           }
@@ -62,7 +174,7 @@
         },
         xaxis: {
           type: 'datetime',
-          categories: series.dates
+          categories: series.coin.dates
         },
         yaxis: {
           opposite: true
@@ -83,7 +195,7 @@
           ],
           chart: {
             type: 'area',
-            height: 350,
+            height: 250,
             zoom: {
               enabled: false
             }
@@ -100,7 +212,7 @@
           },
           xaxis: {
             type: 'datetime',
-            categories: series.dates
+            categories: series.coin.dates
           },
           yaxis: {
             opposite: true
@@ -112,7 +224,7 @@
         <!-- /VOLUME CHART -->
         {% endif %}
         <!-- DIFF CHART -->
-        new ApexCharts(document.querySelector("#volumeChart"), {
+        new ApexCharts(document.querySelector("#diffChart"), {
           series: [
               {
                 name: series.coin.name,
@@ -121,7 +233,7 @@
           ],
           chart: {
             type: 'area',
-            height: 350,
+            height: 250,
             zoom: {
               enabled: false
             }
@@ -138,7 +250,7 @@
           },
           xaxis: {
             type: 'datetime',
-            categories: series.dates
+            categories: series.coin.dates
           },
           yaxis: {
             opposite: true
@@ -148,6 +260,98 @@
           }
         }).render();
     <!-- /DIFF CHART -->
+
+
+      var options = {
+          series: [{{ stock_info['currentPrice'] }}],
+          chart: {
+          height: 350,
+          type: 'radialBar',
+          toolbar: {
+            show: true
+          }
+        },
+        plotOptions: {
+          radialBar: {
+            startAngle: -135,
+            endAngle: 225,
+             hollow: {
+              margin: 0,
+              size: '70%',
+              background: '#fff',
+              image: undefined,
+              imageOffsetX: 0,
+              imageOffsetY: 0,
+              position: 'front',
+              dropShadow: {
+                enabled: true,
+                top: 3,
+                left: 0,
+                blur: 4,
+                opacity: 0.24
+              }
+            },
+            track: {
+              background: '#fff',
+              strokeWidth: '67%',
+              margin: 0, // margin is in pixels
+              dropShadow: {
+                enabled: true,
+                top: -3,
+                left: 0,
+                blur: 4,
+                opacity: 0.35
+              }
+            },
+
+            dataLabels: {
+              show: true,
+              name: {
+                offsetY: -10,
+                show: true,
+                color: '#888',
+                fontSize: '17px'
+              },
+              value: {
+                formatter: function(val) {
+                  return parseInt(val);
+                },
+                color: '#111',
+                fontSize: '36px',
+                show: true,
+              }
+            }
+          }
+        },
+        fill: {
+          type: 'gradient',
+          gradient: {
+            shade: 'dark',
+            type: 'horizontal',
+            shadeIntensity: 0.5,
+            gradientToColors: ['#ABE5A1'],
+            inverseColors: true,
+            opacityFrom: 1,
+            opacityTo: 1,
+            stops: [0, 100]
+          }
+        },
+        stroke: {
+          lineCap: 'round'
+        },
+        labels: ['Current Price'],
+        };
+
+        var chart = new ApexCharts(document.querySelector("#priceGauge"), options);
+        chart.render();
+
+
+
+
+
+
     });
+
+
 </script>
 {% endblock %}

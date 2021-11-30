@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block mainTitleSpan %}
-<h1>Crypto Price Charts {{ crypto }}</h1>
+<h1>Crypto Charts</h1>
 {% endblock %}
 
 
@@ -27,8 +27,8 @@
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         const series = {
-            "dates": {{ date_range|safe }},
             "coin": {
+              "dates": {{ data['date_range']|safe }},
               "name": "{{ data['name'] }}",
               "prices": {{ data['close'] }},
               "volume": {{ data['volume'] }},
@@ -62,7 +62,7 @@
         },
         xaxis: {
           type: 'datetime',
-          categories: series.dates
+          categories: series.coin.dates
         },
         yaxis: {
           opposite: true
@@ -99,7 +99,7 @@
           },
           xaxis: {
             type: 'datetime',
-            categories: series.dates
+            categories: series.coin.dates
           },
           yaxis: {
             opposite: true
@@ -136,7 +136,7 @@
           },
           xaxis: {
             type: 'datetime',
-            categories: series.dates
+            categories: series.coin.dates
           },
           yaxis: {
             opposite: true

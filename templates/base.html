@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
           rel="stylesheet">
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/bootstrap/css/bootstrap.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/bootstrap-icons/bootstrap-icons.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/remixicon/remixicon.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/boxicons/css/boxicons.min.css') }}">
@@ -66,76 +66,14 @@
                 <i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="crypto-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                {% for k, v in all_crypto.items() %}
                 <li>
-                    <a href="{{ url_for('crypto_charts') }}">
-                        <i class="bi bi-circle"></i><span>ALL</span>
+                    <a href="{{ url_for('coin_charts', coin=v|string) }}">
+                        <i class="bi bi-circle"></i><span>{{ k|safe }}</span>
                     </a>
                 </li>
-                <li>
-                    <a href="{{ url_for('coin_charts', coin='BTC-USD') }}">
-                        <i class="bi bi-circle"></i><span>BTC</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ url_for('coin_charts', coin='ETH-USD') }}">
-                        <i class="bi bi-circle"></i><span>ETH</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ url_for('coin_charts', coin='LRC-USD') }}">
-                        <i class="bi bi-circle"></i><span>LRC</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ url_for('coin_charts', coin='BNB-USD') }}">
-                        <i class="bi bi-circle"></i><span>BNB</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ url_for('coin_charts', coin='USDT-USD') }}">
-                        <i class="bi bi-circle"></i><span>USDT</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ url_for('coin_charts', coin='SOL1-USD') }}">
-                        <i class="bi bi-circle"></i><span>SOL</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ url_for('coin_charts', coin='ADA-USD') }}">
-                        <i class="bi bi-circle"></i><span>ADA</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ url_for('coin_charts', coin='DOT1-USD') }}">
-                        <i class="bi bi-circle"></i><span>DOT</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ url_for('coin_charts', coin='DOGE-USD') }}">
-                        <i class="bi bi-circle"></i><span>DOGE</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ url_for('coin_charts', coin='SHIB-USD') }}">
-                        <i class="bi bi-circle"></i><span>SHIB</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ url_for('coin_charts', coin='LTC-USD') }}">
-                        <i class="bi bi-circle"></i><span>LTC</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ url_for('coin_charts', coin='MATIC-USD') }}">
-                        <i class="bi bi-circle"></i><span>MATIC</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ url_for('coin_charts', coin='MANA-USD') }}">
-                        <i class="bi bi-circle"></i><span>MANA</span>
-                    </a>
-                </li>
+                {% endfor %}
+
             </ul>
         </li>
         <!-- /CRYPTO CHARTS -->
