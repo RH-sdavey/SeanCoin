@@ -213,6 +213,20 @@ def coin_charts(coin):
 
 @seanCoin.route("/stonk-charts/<stonk>")
 def stonk_charts(stonk):
-    print(f"HERE: {stonk}")
-    return render_template("stonk_charts.html")
+    start = dt.datetime(2020, 1, 1)
+    end = dt.datetime.now()
+    date_range = pandas.date_range(start, end - dt.timedelta(days=1), freq='d').strftime("%d %b %Y").tolist()
+    data = pdr.DataReader(stonk, 'yahoo', start.strftime("%d %b %Y"), end.strftime("%d %b %Y"))
+
+    pass_dict = {
+        "name": stonk,
+        "open": data['Open'].to_list(),
+        "close": data['Close'].to_list(),
+        "volume": data['Volume'].to_list(),
+        "diff": [str(Decimal(cl) - Decimal(op)) for op, cl in list(zip(data['Open'].to_list(), data['Close'].to_list()))]
+    }
+    return render_template("stonk_charts.html",
+                           date_range=date_range,
+                           data=pass_dict)
+
 

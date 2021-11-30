@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block mainTitleSpan %}
-    <h1>Stonk Price Charts</h1>
+<h1>Crypto Price Charts {{ crypto }}</h1>
 {% endblock %}
 
 
@@ -9,13 +9,145 @@
 {% endblock %}
 
 {% block body %}
-    <div class="row">
-        <div class="col-lg-12">
-          <div class="card">
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Stonk Data since xxx</h5>
+                <h5 class="card-title">{{ data['name'] }} Since 2020</h5>
+                <div id="priceChart"></div>
+                <div id="diffChart"></div>
+                <div id="volumeChart"></div>
             </div>
-          </div>
         </div>
     </div>
+</div>
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const series = {
+            "dates": {{ date_range|safe }},
+            "coin": {
+              "name": "{{ data['name'] }}",
+              "prices": {{ data['close'] }},
+              "volume": {{ data['volume'] }},
+              "open_close_diff": {{ data['diff']|safe }}
+            }
+        }
+        <!-- PRICE CHART -->
+        new ApexCharts(document.querySelector("#priceChart"), {
+        series: [
+            {
+              name: series.coin.name,
+              data: series.coin.prices
+            },
+        ],
+        chart: {
+          type: 'area',
+          height: 350,
+          zoom: {
+            enabled: false
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: 'straight'
+        },
+        subtitle: {
+          text: 'Price',
+          align: 'left'
+        },
+        xaxis: {
+          type: 'datetime',
+          categories: series.dates
+        },
+        yaxis: {
+          opposite: true
+        },
+        legend: {
+          horizontalAlign: 'left'
+        }
+        }).render();
+        <!-- /PRICE CHART -->
+        {% if not data['name'] == "^VIX" %}
+        <!-- VOLUME CHART -->
+        new ApexCharts(document.querySelector("#volumeChart"), {
+          series: [
+              {
+                name: series.coin.name,
+                data: series.coin.volume
+              },
+          ],
+          chart: {
+            type: 'area',
+            height: 350,
+            zoom: {
+              enabled: false
+            }
+          },
+          dataLabels: {
+            enabled: false
+          },
+          stroke: {
+            curve: 'straight'
+          },
+          subtitle: {
+            text: 'Volume',
+            align: 'left'
+          },
+          xaxis: {
+            type: 'datetime',
+            categories: series.dates
+          },
+          yaxis: {
+            opposite: true
+          },
+          legend: {
+            horizontalAlign: 'left'
+          }
+        }).render();
+        <!-- /VOLUME CHART -->
+        {% endif %}
+        <!-- DIFF CHART -->
+        new ApexCharts(document.querySelector("#volumeChart"), {
+          series: [
+              {
+                name: series.coin.name,
+                data: series.coin.open_close_diff
+              },
+          ],
+          chart: {
+            type: 'area',
+            height: 350,
+            zoom: {
+              enabled: false
+            }
+          },
+          dataLabels: {
+            enabled: false
+          },
+          stroke: {
+            curve: 'straight'
+          },
+          subtitle: {
+            text: 'Price Diff',
+            align: 'left'
+          },
+          xaxis: {
+            type: 'datetime',
+            categories: series.dates
+          },
+          yaxis: {
+            opposite: true
+          },
+          legend: {
+            horizontalAlign: 'left'
+          }
+        }).render();
+    <!-- /DIFF CHART -->
+    });
+</script>
 {% endblock %}
