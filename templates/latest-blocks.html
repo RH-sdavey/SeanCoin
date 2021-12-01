@@ -31,13 +31,13 @@
                   # of blocks
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                  <li><a class="dropdown-item" href="{{ url_for('index_val', num_blocks=5) }}">5</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('index_val', num_blocks=10) }}">10</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('index', num_blocks=5) }}">5</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('index', num_blocks=10) }}">10</a></li>
                   <div class="dropdown-divider"></div>
-                  <li><a class="dropdown-item" href="{{ url_for('index_val', num_blocks=20) }}">20</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('index', num_blocks=20) }}">20</a></li>
                   <div class="dropdown-divider"></div>
-                  <li><a class="dropdown-item" href="{{ url_for('index_val', num_blocks=50) }}">50</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('index_val', num_blocks=100) }}">100 ( v.slow)</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('index', num_blocks=50) }}">50</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('index', num_blocks=100) }}">100 ( v.slow)</a></li>
                 </ul>
               </div>
             </div>
