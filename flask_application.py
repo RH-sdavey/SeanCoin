@@ -78,7 +78,7 @@ def account(account):
 
 @seanCoin.route("/coin-charts/<coin>")
 def coin_charts(coin):
-    pass_dict = create_pass_dict(coin)
+    pass_dict = create_pass_dict(coin, crypto=True)
     return render_template(
         "crypto_base.html",
         data=pass_dict
@@ -88,9 +88,10 @@ def coin_charts(coin):
 @seanCoin.route("/stonk-charts/<stonk>")
 def stonk_charts(stonk):
     pass_dict = create_pass_dict(stonk)
-    tab_data = create_tab_info(stonk)
+    tab_data, finance_data = create_tab_info(stonk)
     return render_template(
         "stonk_charts.html",
         data=pass_dict,
-        tab_data=tab_data
+        tab_data=tab_data,
+        finance_data=finance_data
     )

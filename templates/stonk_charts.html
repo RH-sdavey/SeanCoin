@@ -10,53 +10,26 @@
 
 {% block body %}
 <div class="card mb-3" style="max-width: 100%;">
-  <div class="row no-gutters">
-    <div class="col-md-2">
-      <img src="{{ tab_data['logo']['logo_url'] }}" style="width:16em; height:16em;" class="card-img" alt="...">
-    </div>
-    <div class="col-md-10">
+    <div class="row no-gutters">
+        <div class="col-md-2">
+            <img src="{{ tab_data['logo']['logo_url'] }}" style="width:16em; height:16em;" class="card-img" alt="...">
+        </div>
+        <div class="col-md-10">
             <div class="card-body">
                 <ul class="nav nav-tabs d-flex" id="myTabjustified" role="tablist">
+                    {% for k, v in tab_data.items() %}
                     <li class="nav-item flex-fill" role="presentation">
-                        <button class="nav-link w-100 active" id="company-tab" data-bs-toggle="tab"
-                                data-bs-target="#company-justified" type="button" role="tab" aria-controls="company"
-                                aria-selected="true">Company Info
+                        <button class="nav-link w-100" id="{{ k }}-tab" data-bs-toggle="tab"
+                                data-bs-target="#{{ k }}-justified" type="button" role="tab" aria-controls="{{ k }}"
+                                aria-selected="false">{{ k|replace('_columns','') }}
                         </button>
                     </li>
-                    <li class="nav-item flex-fill" role="presentation">
-                        <button class="nav-link w-100" id="currentStock-tab" data-bs-toggle="tab"
-                                data-bs-target="#currentStock-justified" type="button" role="tab" aria-controls="currentStock"
-                                aria-selected="false">Current Stock Data
-                        </button>
-                    </li>
-                    <li class="nav-item flex-fill" role="presentation">
-                        <button class="nav-link w-100" id="historicalStock-tab" data-bs-toggle="tab"
-                                data-bs-target="#historicalStock-justified" type="button" role="tab" aria-controls="historicalStock"
-                                aria-selected="false">Historical Data
-                        </button>
-                    </li>
-                    <li class="nav-item flex-fill" role="presentation">
-                        <button class="nav-link w-100" id="other1-tab" data-bs-toggle="tab"
-                                data-bs-target="#financials-justified" type="button" role="tab" aria-controls="financials"
-                                aria-selected="false">Financials
-                        </button>
-                    </li>
-                    <li class="nav-item flex-fill" role="presentation">
-                        <button class="nav-link w-100" id="dividendSplit-tab" data-bs-toggle="tab"
-                                data-bs-target="#dividendSplit-justified" type="button" role="tab" aria-controls="dividendSplit"
-                                aria-selected="false">Dividends / Split
-                        </button>
-                    </li>
-                    <li class="nav-item flex-fill" role="presentation">
-                        <button class="nav-link w-100" id="holders-tab" data-bs-toggle="tab"
-                                data-bs-target="#holders-justified" type="button" role="tab" aria-controls="holders"
-                                aria-selected="false">Holders
-                        </button>
-                    </li>
+                    {% endfor %}
                 </ul>
                 <div class="tab-content pt-2" id="myTabjustifiedContent">
-                    <div class="tab-pane fade show active" id="company-justified" role="tabpanel"
-                         aria-labelledby="company-tab">
+                    {% for k, v in tab_data.items() %}
+                    <div class="tab-pane fade" id="{{ k }}-justified" role="tabpanel"
+                         aria-labelledby="{{ k }}-tab">
                         <table class="table table-striped">
                             <thead>
                             <tr>
@@ -65,116 +38,35 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {% for k, v in tab_data['company_columns'].items() %}
+                            {% for in_k, in_v in v.items() %}
                             <tr>
-                                <td>{{ k|safe }}</td>
-                                <td>{{ v|safe }}</td>
+                                <td>{{ in_k|safe }}</td>
+                                <td>{{ in_v|safe }}</td>
                             </tr>
                             {% endfor %}
                             </tbody>
                         </table>
                     </div>
-                    <div class="tab-pane fade" id="currentStock-justified" role="tabpanel" aria-labelledby="currentStock-tab">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th scope="col"></th>
-                                <th scope="col"></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for k, v in tab_data['current_stock_columns'].items() %}
-                            <tr>
-                                <td>{{ k|safe }}</td>
-                                <td>{{ v|safe }}</td>
-                            </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="tab-pane fade" id="historicalStock-justified" role="tabpanel" aria-labelledby="historicalStock-tab">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th scope="col"></th>
-                                <th scope="col"></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for k, v in tab_data['historical_stock_columns'].items() %}
-                            <tr>
-                                <td>{{ k|safe }}</td>
-                                <td>{{ v|safe }}</td>
-                            </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="tab-pane fade" id="financials-justified" role="tabpanel" aria-labelledby="financials-tab">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th scope="col"></th>
-                                <th scope="col"></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for k, v in tab_data['financials_columns'].items() %}
-                            <tr>
-                                <td>{{ k|safe }}</td>
-                                <td>{{ v|safe }}</td>
-                            </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="tab-pane fade" id="dividendSplit-justified" role="tabpanel" aria-labelledby="dividendSplit-tab">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th scope="col"></th>
-                                <th scope="col"></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for k, v in tab_data['dividend_split_columns'].items() %}
-                            <tr>
-                                <td>{{ k|safe }}</td>
-                                <td>{{ v|safe }}</td>
-                            </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="tab-pane fade" id="holders-justified" role="tabpanel" aria-labelledby="holders-tab">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th scope="col"></th>
-                                <th scope="col"></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for k, v in tab_data['holders_columns'].items() %}
-                            <tr>
-                                <td>{{ k|safe }}</td>
-                                <td>{{ v|safe }}</td>
-                            </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div><!-- End Default Tabs -->
+                    {% endfor %}
+
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <div class="row">
-    <div class="col-lg-6">
+    <div class="col-lg-3">
         <div class="card">
             <div class="card-body">
                 <div id="priceGauge"></div>
+            </div>
+        </div>
+    </div>
+        <div class="col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <div id="dayhighLowChart"></div>
             </div>
         </div>
     </div>
@@ -188,23 +80,47 @@
 </div>
 
 <div class="row">
-    <div class="col-lg-6">
+    <div class="col-lg-4">
         <div class="card">
             <div class="card-body">
                 <div id="diffChart"></div>
             </div>
         </div>
     </div>
-    <div class="col-lg-6">
-        <div class="card">
-            <div class="card-body">
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-6">
+    <div class="col-lg-5">
         <div class="card">
             <div class="card-body">
                 <div id="volumeChart"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <div id="fiftyTwoWeekHighLowChart"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-body">
+                <div id="quarterlyEarningsRevenueChart"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-body">
+                <div id="quarterlyEarningsGrowthChart"></div>
+            </div>
+        </div>
+    </div>
+        <div class="col-lg-4">
+        <div class="card">
+            <div class="card-body">
+                <div id="yearlyEarningsRevenueChart"></div>
             </div>
         </div>
     </div>
@@ -219,43 +135,37 @@
               "prices": {{ data['close'] }},
               "volume": {{ data['volume'] }},
               "open_close_diff": {{ data['diff']|safe }}
-            }
+            },
+            "chart": {
+                "chart": {
+                    toolbar: {
+                      show: false
+                    },
+                    type: 'area',
+                    height: 250,
+                    zoom: {
+                      enabled: true
+                    }
+                },
+                dataLabels: {enabled: false},
+                stroke: {curve: "straight"},
+                yaxis: {opposite: true},
+                legend: {horizontalAlign: 'left'}
+            },
         }
         <!-- PRICE CHART -->
         new ApexCharts(document.querySelector("#priceChart"), {
-        series: [
-            {
+            series: [{
               name: series.coin.name,
               data: series.coin.prices
-            },
-        ],
-        chart: {
-          type: 'area',
-          height: 250,
-          zoom: {
-            enabled: false
-          }
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          curve: 'straight'
-        },
-        subtitle: {
-          text: 'Price',
-          align: 'left'
-        },
-        xaxis: {
-          type: 'datetime',
-          categories: series.coin.dates
-        },
-        yaxis: {
-          opposite: true
-        },
-        legend: {
-          horizontalAlign: 'left'
-        }
+            }],
+            subtitle: {text: 'Price', align: 'left'},
+            chart: series.chart.chart,
+            dataLabels: series.chart.dataLabels,
+            stroke: series.chart.stroke,
+            legend: series.chart.legend,
+            yaxis: series.chart.yaxis,
+            xaxis: {type: 'datetime', categories: series.coin.dates}
         }).render();
         <!-- /PRICE CHART -->
         {% if not data['name'] == "^VIX" %}
@@ -267,33 +177,13 @@
                 data: series.coin.volume
               },
           ],
-          chart: {
-            type: 'area',
-            height: 250,
-            zoom: {
-              enabled: false
-            }
-          },
-          dataLabels: {
-            enabled: false
-          },
-          stroke: {
-            curve: 'straight'
-          },
-          subtitle: {
-            text: 'Volume',
-            align: 'left'
-          },
-          xaxis: {
-            type: 'datetime',
-            categories: series.coin.dates
-          },
-          yaxis: {
-            opposite: true
-          },
-          legend: {
-            horizontalAlign: 'left'
-          }
+          subtitle: {text: 'Volume', align: 'left'},
+          chart: series.chart.chart,
+          dataLabels: series.chart.dataLabels,
+          stroke: series.chart.stroke,
+          legend: series.chart.legend,
+          yaxis: series.chart.yaxis,
+          xaxis: {type: 'datetime', categories: series.coin.dates}
         }).render();
         <!-- /VOLUME CHART -->
         {% endif %}
@@ -305,46 +195,26 @@
                 data: series.coin.open_close_diff
               },
           ],
-          chart: {
-            type: 'area',
-            height: 250,
-            zoom: {
-              enabled: false
-            }
-          },
-          dataLabels: {
-            enabled: false
-          },
-          stroke: {
-            curve: 'straight'
-          },
-          subtitle: {
-            text: 'Price Diff',
-            align: 'left'
-          },
-          xaxis: {
-            type: 'datetime',
-            categories: series.coin.dates
-          },
-          yaxis: {
-            opposite: true
-          },
-          legend: {
-            horizontalAlign: 'left'
-          }
+          subtitle: {text: 'Price Diff', align: 'left'},
+          chart: series.chart.chart,
+          dataLabels: series.chart.dataLabels,
+          stroke: series.chart.stroke,
+          legend: series.chart.legend,
+          yaxis: series.chart.yaxis,
+          xaxis: {type: 'datetime', categories: series.coin.dates}
         }).render();
     <!-- /DIFF CHART -->
 
 
       var options = {
-          series: [{{ tab_data['current_stock_columns']['currentPrice'] }}],
+          series: [100],
           chart: {
-          height: 350,
-          type: 'radialBar',
-          toolbar: {
-            show: true
-          }
-        },
+              height: 300,
+              type: 'radialBar',
+              toolbar: {
+                show: false
+              }
+          },
         plotOptions: {
           radialBar: {
             startAngle: -135,
@@ -388,7 +258,7 @@
               },
               value: {
                 formatter: function(val) {
-                  return parseInt(val);
+                  return parseInt({{ tab_data['current_stock_columns']['currentPrice'] }});
                 },
                 color: '#111',
                 fontSize: '36px',
@@ -420,12 +290,432 @@
         chart.render();
 
 
+        const maxValue = {{ tab_data['current_stock_columns']['dayHigh'] }};
+
+        const valueToPercent = (val) => (val * 100) / maxValue;
+        const percentToValue = (val) => (val * maxValue) / 100
+
+        var options = {
+          series: [valueToPercent({{ tab_data['current_stock_columns']['dayLow'] }}), valueToPercent({{ tab_data['current_stock_columns']['currentPrice'] }}), valueToPercent(maxValue)],
+          chart: {
+          height: 300,
+          type: 'radialBar',
+        },
+        plotOptions: {
+          radialBar: {
+            offsetY: 0,
+            startAngle: 0,
+            endAngle: 270,
+            hollow: {
+              margin: 5,
+              size: '30%',
+              background: 'transparent',
+              image: undefined,
+            },
+            dataLabels: {
+              name: {
+                show: false,
+              },
+              value: {
+                show: false,
+                formatter: percentToValue,
+              }
+            }
+          }
+        },
+        colors: ['#d9534f', '#0275d8', '#5cb85c'],
+        labels: ['dayLow', 'currentPrice', 'dayHigh'],
+        legend: {
+          show: true,
+          floating: true,
+          fontSize: '16px',
+          position: 'left',
+          offsetX: 0,
+          offsetY: 15,
+          labels: {
+            useSeriesColors: true,
+          },
+          markers: {
+            size: 0
+          },
+          formatter: function(seriesName, opts) {
+            return seriesName + ":  " + percentToValue(opts.w.globals.series[opts.seriesIndex])
+          },
+          itemMargin: {
+            vertical: 3
+          }
+        },
+        responsive: [{
+          breakpoint: 480,
+          options: {
+            legend: {
+                show: false
+            }
+          }
+        }]
+        };
+
+        var chart = new ApexCharts(document.querySelector("#dayhighLowChart"), options);
+        chart.render();
 
 
 
 
-    });
+        const fiftyTwoWeekmaxValue = {{ tab_data['historical_stock_columns']['fiftyTwoWeekHigh'] }};
+        var options = {
+          series: [valueToPercent({{ tab_data['historical_stock_columns']['fiftyTwoWeekLow'] }}), valueToPercent({{ tab_data['current_stock_columns']['currentPrice'] }}), valueToPercent(fiftyTwoWeekmaxValue)],
+          chart: {
+          height: 300,
+          type: 'radialBar',
+        },
+        plotOptions: {
+          radialBar: {
+            offsetY: 0,
+            startAngle: 0,
+            endAngle: 270,
+            hollow: {
+              margin: 5,
+              size: '30%',
+              background: 'transparent',
+              image: undefined,
+            },
+            dataLabels: {
+              name: {
+                show: false,
+              },
+              value: {
+                show: false,
+                formatter: percentToValue,
+              }
+            }
+          }
+        },
+        colors: ['#d9534f', '#0275d8', '#5cb85c'],
+        labels: ['fiftyTwoWeekLow', 'currentPrice', 'fiftyTwoWeekHigh'],
+        legend: {
+          show: true,
+          floating: true,
+          fontSize: '16px',
+          position: 'left',
+          offsetX: 0,
+          offsetY: 10,
+          labels: {
+            useSeriesColors: true,
+          },
+          markers: {
+            size: 0
+          },
+          formatter: function(seriesName, opts) {
+            return seriesName + ":  " + percentToValue(opts.w.globals.series[opts.seriesIndex])
+          },
+          itemMargin: {
+            vertical: 3
+          }
+        },
+        responsive: [{
+          breakpoint: 480,
+          options: {
+            legend: {
+                show: false
+            }
+          }
+        }]
+        };
+
+        var chart = new ApexCharts(document.querySelector("#fiftyTwoWeekHighLowChart"), options);
+        chart.render();
 
 
+        var options = {
+          chart: {
+            height: 300,
+            type: "line",
+            stacked: false
+          },
+          title: {
+              text: 'Quarterly Earnings and Revenue',
+              align: 'left'
+          },
+          dataLabels: {
+            enabled: true
+          },
+          colors: ["#FF1654", "#247BA0"],
+          series: [
+            {
+              name: "Earnings",
+              data: {{ finance_data['q_earn'] }}
+            },
+            {
+              name: "Revenue",
+              data: {{ finance_data['q_rev'] }}
+            }
+          ],
+          stroke: {
+            width: [4, 4]
+          },
+          plotOptions: {
+            bar: {
+              columnWidth: "20%"
+            }
+          },
+          xaxis: {
+            categories: {{ finance_data['q_dates']|safe }}
+          },
+          yaxis: [
+            {
+              axisTicks: {
+                show: true
+              },
+              axisBorder: {
+                show: true,
+                color: "#FF1654"
+              },
+              labels: {
+                style: {
+                  colors: "#FF1654"
+                }
+              },
+              title: {
+                text: "Earnings",
+                style: {
+                  color: "#FF1654"
+                }
+              }
+            },
+            {
+              opposite: true,
+              axisTicks: {
+                show: true
+              },
+              axisBorder: {
+                show: true,
+                color: "#247BA0"
+              },
+              labels: {
+                style: {
+                  colors: "#247BA0"
+                }
+              },
+              title: {
+                text: "Revenue",
+                style: {
+                  color: "#247BA0"
+                }
+              }
+            }
+          ],
+          tooltip: {
+            shared: false,
+            intersect: true,
+            x: {
+              show: false
+            }
+          },
+          legend: {
+            horizontalAlign: "left",
+            offsetX: 40
+          }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#quarterlyEarningsRevenueChart"), options);
+        chart.render();
+
+
+
+        var options = {
+          chart: {
+            height: 300,
+            type: "line",
+            stacked: false
+          },
+          title: {
+              text: 'Quarterly Earnings Growth',
+              align: 'left'
+          },
+          dataLabels: {
+            enabled: true
+          },
+          colors: ["#FF1654", "#247BA0"],
+          series: [
+            {
+              name: "Estimated",
+              data: {{ finance_data['q_est_earn'] }}
+            },
+            {
+              name: "Actual",
+              data: {{ finance_data['q_actual_earn'] }}
+            }
+          ],
+          stroke: {
+            width: [4, 4]
+          },
+          plotOptions: {
+            bar: {
+              columnWidth: "20%"
+            }
+          },
+          xaxis: {
+            categories: {{ finance_data['q_date_earn']|safe }}
+          },
+          yaxis: [
+            {
+              axisTicks: {
+                show: true
+              },
+              axisBorder: {
+                show: true,
+                color: "#FF1654"
+              },
+              labels: {
+                style: {
+                  colors: "#FF1654"
+                }
+              },
+              title: {
+                text: "Estimated",
+                style: {
+                  color: "#FF1654"
+                }
+              }
+            },
+            {
+              opposite: true,
+              axisTicks: {
+                show: true
+              },
+              axisBorder: {
+                show: true,
+                color: "#247BA0"
+              },
+              labels: {
+                style: {
+                  colors: "#247BA0"
+                }
+              },
+              title: {
+                text: "Actual",
+                style: {
+                  color: "#247BA0"
+                }
+              }
+            }
+          ],
+          tooltip: {
+            shared: false,
+            intersect: true,
+            x: {
+              show: false
+            }
+          },
+          legend: {
+            horizontalAlign: "left",
+            offsetX: 40
+          }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#quarterlyEarningsGrowthChart"), options);
+        chart.render();
+
+
+
+        var options = {
+          chart: {
+            height: 300,
+            type: "line",
+            stacked: false
+          },
+          title: {
+              text: 'Yearly Earnings and Revenue',
+              align: 'left'
+          },
+          dataLabels: {
+            enabled: true
+          },
+          colors: ["#FF1654", "#247BA0"],
+          series: [
+            {
+              name: "Earnings",
+              data: {{ finance_data['y_earn'] }}
+            },
+            {
+              name: "Revenue",
+              data: {{ finance_data['y_rev'] }}
+            }
+          ],
+          stroke: {
+            width: [4, 4]
+          },
+          plotOptions: {
+            bar: {
+              columnWidth: "20%"
+            }
+          },
+          xaxis: {
+            categories: {{ finance_data['y_dates']|safe }}
+          },
+          yaxis: [
+            {
+              axisTicks: {
+                show: true
+              },
+              axisBorder: {
+                show: true,
+                color: "#FF1654"
+              },
+              labels: {
+                style: {
+                  colors: "#FF1654"
+                }
+              },
+              title: {
+                text: "Earnings",
+                style: {
+                  color: "#FF1654"
+                }
+              }
+            },
+            {
+              opposite: true,
+              axisTicks: {
+                show: true
+              },
+              axisBorder: {
+                show: true,
+                color: "#247BA0"
+              },
+              labels: {
+                style: {
+                  colors: "#247BA0"
+                }
+              },
+              title: {
+                text: "Revenue",
+                style: {
+                  color: "#247BA0"
+                }
+              }
+            }
+          ],
+          tooltip: {
+            shared: false,
+            intersect: true,
+            x: {
+              show: false
+            }
+          },
+          legend: {
+            horizontalAlign: "left",
+            offsetX: 40
+          }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#yearlyEarningsRevenueChart"), options);
+        chart.render();
+});
+
+</script>
+<script>
+    document.getElementById("company_columns-justified").classList.add('active');
+    document.getElementById("company_columns-justified").classList.add('show');
 </script>
 {% endblock %}

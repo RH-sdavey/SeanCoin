@@ -32,17 +32,18 @@ def calc_perc_of_transactions(list_of_dicts):
     return total_txs, list_of_dicts
 
 
-def create_pass_dict(name):
+def create_pass_dict(name, crypto=False):
     start = dt.datetime(2020, 1, 1)
     end = dt.datetime.now()
     data = pdr.DataReader(name, 'yahoo', start.strftime("%d %b %Y"), end.strftime("%d %b %Y"))
 
     data = data.reset_index(level=[0])
     date_range = [item.strftime('%d %b %Y') for item in data['Date']]
-    open_price = [int(round(item, 2)) for item in data['Open'].to_list()]
-    close = [int(round(item, 2)) for item in data['Close'].to_list()]
-    volume = [int(round(item, 2)) for item in data['Volume'].to_list()]
-    diff = [int(round(cl - op, 2)) for op, cl in list(zip(open_price, close))]
+    dec_place = 8 if crypto else 2
+    open_price = [round(item, dec_place) for item in data['Open'].to_list()]
+    close = [round(item, dec_place) for item in data['Close'].to_list()]
+    volume = [round(item, dec_place) for item in data['Volume'].to_list()]
+    diff = [round(cl - op, dec_place) for op, cl in list(zip(open_price, close))]
 
     return {
         "name": name,
@@ -119,6 +120,7 @@ def create_tab_info(name):
     logo_columns = ['logo_url']
 
     stonk = yf.Ticker(name)
+    finance_data = parse_financial_date(stonk)
 
     for key, value in stonk.info.items():
         if key in company_columns:
@@ -135,7 +137,21 @@ def create_tab_info(name):
             tab_data["holders_columns"][key] = value
         if key in logo_columns:
             tab_data["logo"][key] = value
-    return tab_data
+    return tab_data, finance_data
+
+
+def parse_financial_date(stonk):
+    return {
+        "q_dates": [item['date'] for item in stonk.financials_data['earnings']['financialsChart']['quarterly']],
+        "q_rev": [item['revenue'] for item in stonk.financials_data['earnings']['financialsChart']['quarterly']],
+        "q_earn": [item['earnings'] for item in stonk.financials_data['earnings']['financialsChart']['quarterly']],
+        "y_dates": [item['date'] for item in stonk.financials_data['earnings']['financialsChart']['yearly']],
+        "y_rev": [item['revenue'] for item in stonk.financials_data['earnings']['financialsChart']['yearly']],
+        "y_earn": [item['earnings'] for item in stonk.financials_data['earnings']['financialsChart']['yearly']],
+        "q_est_earn": [item['estimate'] for item in stonk.financials_data['earnings']['earningsChart']['quarterly']],
+        "q_actual_earn": [item['actual'] for item in stonk.financials_data['earnings']['earningsChart']['quarterly']],
+        "q_date_earn": [item['date'] for item in stonk.financials_data['earnings']['earningsChart']['quarterly']],
+    }
 
 
 def calc_total_transactions(list_of_dicts):
