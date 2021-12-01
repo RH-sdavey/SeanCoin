@@ -20,11 +20,11 @@ def all_crypto():
 @seanCoin.route('/index.html/<int:num_blocks>')
 def index(num_blocks=5):
     last_n = bc.block_factory().get_last_n_blocks(num_blocks)
-    list_of_dicts = [dict(item) for item in last_n]
-    total_transactions, list_of_dicts = calc_perc_of_transactions(list_of_dicts)
+    all_n_blocks = [dict(item) for item in last_n]
+    total_transactions, all_n_blocks = calc_perc_of_transactions(all_n_blocks)
     return render_template(
         'latest-blocks.html',
-        data=list_of_dicts,
+        data=all_n_blocks,
         total_transactions=total_transactions
     )
 

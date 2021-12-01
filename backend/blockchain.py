@@ -27,28 +27,19 @@ class BlockChain:
         return f"BlockChain({self.infura_url})"
 
     def connect(self):
-        """
-
-        :return:
-        """
+        """Connect to web3 eth blockchain instance"""
         self.web3 = Web3(Web3.HTTPProvider(self.infura_url))
         return self
 
     def established(self):
-        """
-
-        :return:
-        """
+        """Verify is connection to web3 eth blockchain instance is established"""
         self._established = self.web3.isConnected()
         if not self._established:
             exit("Connecting to Ethereum Blockchain failed, please check manually")
         return self._established
 
     def return_blockchain(self):
-        """
-
-        :return:
-        """
+        """if connection to web3 eth blockchain is established, return whole blockchain instance"""
         if self.established():
             return self
 
@@ -73,8 +64,10 @@ class Block:
         return self.block[item]
 
     def get_block(self, full_transactions=True):
-        """returns one block instance, defaults to latest block in the blockchain        """
-
+        """assigns one block instance to self.block, defaults to latest block in the blockchain
+        because self is returned, can be used as a chained-method eg: instance.get_blocks.do_something()
+        :return: self
+        """
         self.block_lookup = int(self.block_lookup) if self.block_lookup != "latest" else self.block_lookup
         obj = dict(self.blockchain.web3.eth.get_block(block_identifier=self.block_lookup,
                                                       full_transactions=full_transactions))
@@ -86,9 +79,9 @@ class Block:
         return self
 
     def get_last_n_blocks(self, n, full_transactions=True):
-        """
-        TODO
-        :param full_transactions:
+        """Get the last n blocks from eth blockchain
+        :param n: number of blocks to get
+        :param bool full_transactions: if True, include full transactions details found in the blocks
         :return:
         """
         last_n = []
@@ -108,10 +101,14 @@ class Account:
 
     @staticmethod
     def normalize_balance(balance: str) -> str:
-        """
+        """Eth balances from web3 lib are in format 130328902193012.00000000 (for eg)
+        where the actual balance would be 1.303....
+        This method normalizes the balance by attempting to shift the . 18 places to the left
+        (FIXME: must be a better way?)
 
-        :param balance:
-        :return:
+        :param str balance: balance amount to normalize
+        :return: normalized balance
+        :rtype: str
         """
         balance = str(balance)
         if balance == "0":
@@ -123,9 +120,8 @@ class Account:
 
     def get_balance(self) -> str:
         """
-        TODO
-        :param account:
-        :return:
+        :return: Returns a normalized eth account balance. see normalize_balance for more info.
+        :rtype: str
         """
         balance = str(self.blockchain.web3.eth.get_balance(self.account))
         return self.normalize_balance(balance)
