@@ -247,20 +247,42 @@ def coin_charts(coin):
 
 @seanCoin.route("/stonk-charts/<stonk>")
 def stonk_charts(stonk):
-    tab_data = {"company": {}, "current_stock": {}}
+    tab_data = {
+        "company_columns": {},
+        "current_stock_columns": {},
+        "historical_stock_columns": {},
+        "financials_columns": {},
+        "dividend_split_columns": {},
+        "holders_columns": {},
+        "logo": {}
+    }
     pass_dict = create_pass_dict(stonk)
     stonk = yf.Ticker(stonk)
-    company_columns = ['sector', 'fullTimeEmployees', 'longBusinessSummary', 'website', ' industry', 'currency']
-    current_stock_columns = ['previousClose', 'open', 'dayLow', 'dayHigh', 'floatShares', 'sharesShort', 'shortRatio']
+    company_columns = ['sector', 'fullTimeEmployees', 'longBusinessSummary', 'website', ' industry', 'currency', 'exchangeTimezoneName']
+    current_stock_columns = ['currentPrice', 'previousClose', 'open', 'dayLow', 'dayHigh', 'volume', 'floatShares', 'sharesOutstanding', 'sharesShort', 'shortRatio']
+    historical_stock_columns = ['fiftyDayAverage', 'twoHundredDayAverage', 'fiftyTwoWeekHigh', 'fiftyTwoWeekLow', 'averageVolume10days', 'impliedSharesOutstanding']
+    financials_columns = ['marketCap', 'totalCash', 'totalDebt', 'totalCashPerShare', 'totalRevenue', 'revenuePerShare', 'grossProfits', 'forwardPE', 'profitMargins', 'revenueGrowth', 'operatingMargins', 'freeCashflow', 'debtToEquity']
+    dividend_split_columns = ['lastDividendValue', 'lastSplitFactor', ]
+    holders_columns = ['heldPercentInstitutions', 'heldPercentInsiders']
+    logo_columns = ['logo_url']
     for key, value in stonk.info.items():
         if key in company_columns:
-            tab_data["company"][key] = value
+            tab_data["company_columns"][key] = value
         if key in current_stock_columns:
-            tab_data["current_stock"][key] = value
+            tab_data["current_stock_columns"][key] = value
+        if key in historical_stock_columns:
+            tab_data["historical_stock_columns"][key] = value
+        if key in financials_columns:
+            tab_data["financials_columns"][key] = value
+        if key in dividend_split_columns:
+            tab_data["dividend_split_columns"][key] = value
+        if key in holders_columns:
+            tab_data["holders_columns"][key] = value
+        if key in logo_columns:
+            tab_data["logo"][key] = value
 
     return render_template(
         "stonk_charts.html",
         data=pass_dict,
-        stock_info=stonk.info,
         tab_data=tab_data
     )
