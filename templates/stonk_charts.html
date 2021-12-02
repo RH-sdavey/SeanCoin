@@ -317,7 +317,7 @@
                 show: false,
               },
               value: {
-                show: false,
+                show: true,
                 formatter: percentToValue,
               }
             }
@@ -328,7 +328,7 @@
         legend: {
           show: true,
           floating: true,
-          fontSize: '16px',
+          fontSize: '8px',
           position: 'left',
           offsetX: 0,
           offsetY: 15,
@@ -339,7 +339,7 @@
             size: 0
           },
           formatter: function(seriesName, opts) {
-            return seriesName + ":  " + percentToValue(opts.w.globals.series[opts.seriesIndex])
+            return seriesName
           },
           itemMargin: {
             vertical: 3
