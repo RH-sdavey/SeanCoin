@@ -87,7 +87,7 @@ new ApexCharts(document.querySelector("#diffChart"), {
 new ApexCharts(document.querySelector("#priceGauge"), {
     series: [100],
     chart: {
-        height: 300,
+        height: 280,
         type: 'radialBar',
         toolbar: {
             show: false
@@ -167,7 +167,7 @@ new ApexCharts(document.querySelector("#priceGauge"), {
 
 high_low_radial_common_config = {
     chart: {
-        height: 300,
+        height:280,
         type: 'radialBar',
     },
     plotOptions: {
@@ -252,7 +252,7 @@ financial_chart_common_config = {
                 show: false
             }
         },
-        height: 300,
+        height: 280,
         type: "line",
         stacked: false
     },

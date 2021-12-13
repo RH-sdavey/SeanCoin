@@ -157,7 +157,6 @@
   var useDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
 
-
   var needsValidation = document.querySelectorAll('.needs-validation')
 
   Array.prototype.slice.call(needsValidation)
