@@ -15,7 +15,7 @@
         chart: {
           type: 'bar',
           height: 100,
-          width: 600,
+          width: '100%',
               toolbar: {
                 show: false
               }
@@ -78,7 +78,7 @@
                     <td><a href="/block/{{ item.number }}" class="btn btn-info">{{ item.number }}</a></td>
                     <td>{{ item.hash|truncate(20) }}</td>
                     <td><a href="{{ url_for('account', account=item.miner) }}">{{ item.miner|truncate(20) }}</a></td>
-                    <td>{{ item.timestamp }}</td>
+                    <td>{{ fromtimestamp(item.timestamp).strftime("%d/%m/%Y:%H:%M:%S") }}</td>
                     <td>{{ item.transactions|length }}</td>
                     <td><div id="barchart_{{ item.number }}"></div></td>
                     <td>{{ total_val[1][index] }}</td>

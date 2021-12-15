@@ -1,3 +1,5 @@
+import datetime
+
 from flask import Flask, render_template
 
 from werkzeug.routing import BuildError
@@ -35,7 +37,9 @@ def index(num_blocks=5):
         data=all_n_blocks,
         total_transactions=total_transactions,
         total_val=calc_val_of_all_transactions_in_blocks(all_n_blocks),
-        enumerate=enumerate
+        enumerate=enumerate,
+        fromtimestamp=datetime.datetime.fromtimestamp,
+        strftime=datetime.datetime.strftime
     )
 
 
@@ -57,7 +61,9 @@ def block_page(page):
             block_hash=block['hash'],
             block_number=block['number'],
             next_disabled=next_disabled,
-            trans_len=len(txs)
+            trans_len=len(txs),
+            fromtimestamp=datetime.datetime.fromtimestamp,
+            strftime=datetime.datetime.strftime
         )
     except BuildError:
         return render_template('ohno.html')
@@ -89,7 +95,7 @@ def account(account):
 def coin_charts(coin):
     pass_dict = price_chart_info(coin, crypto=True)
     return render_template(
-        "crypto_base.html",
+        "crypto_charts.html",
         data=pass_dict
     )
 

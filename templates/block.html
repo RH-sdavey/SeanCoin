@@ -65,7 +65,7 @@
                     <td><a href="{{ url_for('account', account=block_obj.miner) }}">{{ block_obj.miner|truncate(20) }}</a></td>
                     <td>{{ block_obj.difficulty }}</td>
                     <td>{{ block_obj.totalDifficulty }}</td>
-                    <td>{{ block_obj.timestamp }}</td>
+                    <td>{{ fromtimestamp(block_obj.timestamp).strftime("%d/%m/%Y:%H:%M:%S") }}</td>
                   </tr>
                 </tbody>
               </table>
