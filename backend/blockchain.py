@@ -97,31 +97,4 @@ class Account:
     def __init__(self, blockchain: BlockChain, account=None):
         self.blockchain = blockchain
         self.account = account
-        self.balance = self.get_balance()
-
-    @staticmethod
-    def normalize_balance(balance: str) -> str:
-        """Eth balances from web3 lib are in format 130328902193012.00000000 (for eg)
-        where the actual balance would be 1.303....
-        This method normalizes the balance by attempting to shift the . 18 places to the left
-        (FIXME: must be a better way?)
-
-        :param str balance: balance amount to normalize
-        :return: normalized balance
-        :rtype: str
-        """
-        balance = str(balance)
-        if balance == "0":
-            return balance
-        if len(balance) < 18:
-            len_diff = 18 - len(balance)
-            balance = balance.zfill(18 + len_diff + 1)
-        return f"{balance[:-18]}.{balance[-18:]}".rstrip("0")
-
-    def get_balance(self) -> str:
-        """
-        :return: Returns a normalized eth account balance. see normalize_balance for more info.
-        :rtype: str
-        """
-        balance = str(self.blockchain.web3.eth.get_balance(self.account))
-        return self.normalize_balance(balance)
+        self.balance = str(self.blockchain.web3.eth.get_balance(self.account))

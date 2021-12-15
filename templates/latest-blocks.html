@@ -39,16 +39,6 @@
     </script>
     <script src="{{ url_for('static', filename='assets/vendor/apexcharts/apexcharts.min.js') }}"></script>
     <section class="section">
-      <div class="jumbotron index-jumbo">
-        <p class="lead">This is a tool to explore the Ethereum Blockchain (Work In Progress)</p>
-        <p class="my-5"></p>
-        <ul>
-          <li>you can see the individual blocks as they are mined and also the details of the transactions in each block</li>
-          <li><a href="https://rh-sdavey.github.io/sean_portfolio/">Created by: <i class="bi bi-emoji-neutral"></i> Sean Davey 2021</a></li>
-          <li><a href="https://github.com/RH-sdavey/SeanCoin">Github Repo:<i class="bi bi-github"></i></a></li>
-        </ul>
-        <hr class="my-4">
-      </div>
       <div class="row">
         <div class="col-lg-12">
           <div class="card">
@@ -69,7 +59,7 @@
                 </ul>
               </div>
             </div>
-              <h5 class="card-title">Last {{ data|length }} Blocks</h5>
+              <h5 class="card-title">Total value of all ETH traded in last {{ data|length }} blocks: {{ total_val[0] }}</h5>
               <table class="table table-striped">
                 <thead>
                   <tr>
@@ -79,10 +69,11 @@
                     <th scope="col">TimeStamp</th>
                     <th scope="col"># Transactions</th>
                     <th scope="col">% Transactions</th>
+                    <th scope="col">Val. Eth.</th>
                   </tr>
                 </thead>
                 <tbody>
-                {% for item in data %}
+                {% for index, item in enumerate(data) %}
                   <tr>
                     <td><a href="/block/{{ item.number }}" class="btn btn-info">{{ item.number }}</a></td>
                     <td>{{ item.hash|truncate(20) }}</td>
@@ -90,6 +81,7 @@
                     <td>{{ item.timestamp }}</td>
                     <td>{{ item.transactions|length }}</td>
                     <td><div id="barchart_{{ item.number }}"></div></td>
+                    <td>{{ total_val[1][index] }}</td>
                   </tr>
                 <script>
                 document.addEventListener("DOMContentLoaded", () => {

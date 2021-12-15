@@ -118,28 +118,27 @@
       <div class="row">
         <div class="col-lg-12">
           <div class="card">
-            <h5 class="card-title">Transactions </h5>
             <div class="card-body">
               <table class="table table-striped">
                 <thead>
                   <tr>
+                    <th scope="col">Link</th>
                     <th scope="col">From</th>
                     <th scope="col">To</th>
                     <th scope="col">Gas</th>
                     <th scope="col">Gas Price</th>
                     <th scope="col">Value (Eth)</th>
-                    <th scope="col">Link</th>
                   </tr>
                 </thead>
                 <tbody>
                   {% for item in txs %}
                   <tr>
+                    <td><a href="/block/{{ block_number }}/transactions/{{ item.transactionIndex }}" class="btn btn-info">Details</a></td>
                     <td><a href="{{ url_for('account', account=item.from) }}">{{ item.from|truncate(20) }}</a></td>
                     <td><a href="{{ url_for('account', account=item.to) }}">{{ item.to|truncate(20) }}</a></td>
                     <td>{{ item.gas }}</td>
                     <td>{{ item.gasPrice }}</td>
                     <td>{{ normalize_balance(item.value) }}</td>
-                    <td><a href="/block/{{ block_number }}/transactions/{{ item.transactionIndex }}" class="btn btn-info">Details</a></td>
                   </tr>
                   {% endfor %}
                 </tbody>

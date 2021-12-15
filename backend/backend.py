@@ -21,25 +21,51 @@ all_crypto = {
 }
 
 
-def calc_perc_of_transactions(list_of_dicts):
-    total_txs = calc_total_transactions(list_of_dicts)
-    for item in list_of_dicts:
+def normalize_balance(balance: str) -> str:
+    """Eth balances from web3 lib are in format 130328902193012.00000000 (for eg)
+    where the actual balance would be 1.303....
+    This method normalizes the balance by attempting to shift the . 18 places to the left
+    (FIXME: must be a better way?)
+
+    :param str balance: balance amount to normalize
+    :return: normalized balance
+    :rtype: str
+    """
+    balance = str(balance)
+    if balance == "0":
+        return balance
+    if len(balance) < 18:
+        len_diff = 18 - len(balance)
+        balance = balance.zfill(18 + len_diff + 1)
+    return f"{balance[:-18]}.{balance[-18:]}".rstrip("0")
+
+
+def calc_val_of_all_transactions_in_blocks(list_of_blocks):
+    total_per_block = [sum(val) for val in [[tx['value'] for tx in block['transactions']] for block in list_of_blocks]]
+    total_val = normalize_balance(sum(total_per_block))
+    return total_val, [normalize_balance(i) for i in total_per_block]
+
+
+def calc_perc_of_transactions(list_of_blocks):
+    total_txs = sum([len(block['transactions']) for block in list_of_blocks])
+    for item in list_of_blocks:
         txs_len = len(item['transactions'])
         try:
             item['perc_of_total_trans'] = (txs_len / total_txs) * 100
         except ZeroDivisionError:
             item['perc_of_total_trans'] = 0
-    return total_txs, list_of_dicts
+    return total_txs, list_of_blocks
 
 
-def create_pass_dict(name, crypto=False):
-    start = dt.datetime(2020, 1, 1)
+def price_chart_info(name, crypto=False) -> dict:
+    dec_place = 8 if crypto else 2
+    start = dt.datetime(2019, 1, 1)
     end = dt.datetime.now()
     data = pdr.DataReader(name, 'yahoo', start.strftime("%d %b %Y"), end.strftime("%d %b %Y"))
 
     data = data.reset_index(level=[0])
     date_range = [item.strftime('%d %b %Y') for item in data['Date']]
-    dec_place = 8 if crypto else 2
+
     open_price = [round(item, dec_place) for item in data['Open'].to_list()]
     close = [round(item, dec_place) for item in data['Close'].to_list()]
     volume = [round(item, dec_place) for item in data['Volume'].to_list()]
@@ -55,7 +81,7 @@ def create_pass_dict(name, crypto=False):
     }
 
 
-def create_tab_info(name):
+def stonk_table_info(name):
     tab_data = {
         "company_columns": {},
         "current_stock_columns": {},
@@ -120,7 +146,7 @@ def create_tab_info(name):
     logo_columns = ['logo_url']
 
     stonk = yf.Ticker(name)
-    finance_data = parse_financial_date(stonk)
+    finance_data = parse_financial_data(stonk)
 
     for key, value in stonk.info.items():
         if key in company_columns:
@@ -140,7 +166,7 @@ def create_tab_info(name):
     return tab_data, finance_data
 
 
-def parse_financial_date(stonk):
+def parse_financial_data(stonk):
     return {
         "q_dates": [item['date'] for item in stonk.financials_data['earnings']['financialsChart']['quarterly']],
         "q_rev": [item['revenue'] for item in stonk.financials_data['earnings']['financialsChart']['quarterly']],
@@ -152,11 +178,3 @@ def parse_financial_date(stonk):
         "q_actual_earn": [item['actual'] for item in stonk.financials_data['earnings']['earningsChart']['quarterly']],
         "q_date_earn": [item['date'] for item in stonk.financials_data['earnings']['earningsChart']['quarterly']],
     }
-
-
-def calc_total_transactions(list_of_dicts):
-    total_txs = 0
-    for item in list_of_dicts:
-        txs_len = len(item['transactions'])
-        total_txs += txs_len
-    return total_txs
