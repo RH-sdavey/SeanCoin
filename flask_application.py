@@ -10,11 +10,11 @@ from backend.backend import (
     normalize_balance,
     calc_perc_of_transactions,
     calc_val_of_all_transactions_in_blocks,
-    price_chart_info,
-    stonk_table_info,
-    all_crypto as ac
+    pandas_price_data,
+    yfinance_data,
+    div_and_split
 )
-
+from backend.lib import all_crypto as ac
 
 bc = BlockChain()
 seanCoin = Flask(__name__)
@@ -93,7 +93,7 @@ def account(account):
 
 @seanCoin.route("/coin-charts/<coin>")
 def coin_charts(coin):
-    pass_dict = price_chart_info(coin, crypto=True)
+    pass_dict = pandas_price_data(coin, crypto=True)
     return render_template(
         "crypto_charts.html",
         data=pass_dict
@@ -102,11 +102,22 @@ def coin_charts(coin):
 
 @seanCoin.route("/stonk-charts/<stonk>")
 def stonk_charts(stonk):
-    pass_dict = price_chart_info(stonk)
-    tab_data, finance_data = stonk_table_info(stonk)
+    pass_dict = pandas_price_data(stonk)
+    stonk = yfinance_data(stonk)
     return render_template(
         "stonk_charts.html",
         data=pass_dict,
-        tab_data=tab_data,
-        finance_data=finance_data
+        stonk=stonk,
+        getattr=getattr
+    )
+
+
+@seanCoin.route("/stonk_info/<stonk>")
+def stonk_info(stonk):
+    dividend, split = div_and_split(stonk)
+    return render_template(
+        "company_info.html",
+        stonk=stonk,
+        dividend_hist=dividend,
+        split_hist=split
     )

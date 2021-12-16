@@ -3,22 +3,7 @@ import datetime as dt
 import pandas_datareader as pdr
 import yfinance_ez as yf
 
-
-all_crypto = {
-    "eth": "ETH-USD",
-    "btc": 'BTC-USD',
-    "lrc": 'LRC-USD',
-    "bnb": 'BNB-USD',
-    "usdt": 'USDT-USD',
-    "sol": 'SOL1-USD',
-    "ada": 'ADA-USD',
-    "dot": 'DOT1-USD',
-    "doge": 'DOGE-USD',
-    "shib": 'SHIB-USD',
-    "ltc": 'LTC-USD',
-    "matic": 'MATIC-USD',
-    "mana": 'MANA-USD',
-}
+from stonk import Stonk
 
 
 def normalize_balance(balance: str) -> str:
@@ -57,7 +42,7 @@ def calc_perc_of_transactions(list_of_blocks):
     return total_txs, list_of_blocks
 
 
-def price_chart_info(name, crypto=False) -> dict:
+def pandas_price_data(name, crypto=False) -> dict:
     dec_place = 8 if crypto else 2
     start = dt.datetime(2019, 1, 1)
     end = dt.datetime.now()
@@ -81,100 +66,14 @@ def price_chart_info(name, crypto=False) -> dict:
     }
 
 
-def stonk_table_info(name):
-    tab_data = {
-        "company_columns": {},
-        "current_stock_columns": {},
-        "historical_stock_columns": {},
-        "financials_columns": {},
-        "dividend_split_columns": {},
-        "holders_columns": {},
-        "logo": {}
-    }
-    company_columns = [
-        'sector',
-        'fullTimeEmployees',
-        'longBusinessSummary',
-        'website',
-        'industry',
-        'currency',
-        'exchangeTimezoneName'
-    ]
-    current_stock_columns = [
-        'currentPrice',
-        'previousClose'
-        'open',
-        'dayLow',
-        'dayHigh',
-        'volume',
-        'floatShares',
-        'sharesOutstanding',
-        'sharesShort',
-        'shortRatio'
-    ]
-    historical_stock_columns = [
-        'fiftyDayAverage',
-        'twoHundredDayAverage',
-        'fiftyTwoWeekHigh',
-        'fiftyTwoWeekLow',
-        'averageVolume10days',
-        'impliedSharesOutstanding'
-    ]
-    financials_columns = [
-        'marketCap',
-        'totalCash',
-        'totalDebt',
-        'totalCashPerShare',
-        'totalRevenue',
-        'revenuePerShare',
-        'grossProfits',
-        'forwardPE',
-        'profitMargins',
-        'revenueGrowth',
-        'operatingMargins',
-        'freeCashflow',
-        'debtToEquity'
-    ]
-    dividend_split_columns = [
-        'lastDividendValue',
-        'lastSplitFactor'
-    ]
-    holders_columns = [
-        'heldPercentInstitutions',
-        'heldPercentInsiders'
-    ]
-    logo_columns = ['logo_url']
-
-    stonk = yf.Ticker(name)
-    finance_data = parse_financial_data(stonk)
-
-    for key, value in stonk.info.items():
-        if key in company_columns:
-            tab_data["company_columns"][key] = value
-        if key in current_stock_columns:
-            tab_data["current_stock_columns"][key] = value
-        if key in historical_stock_columns:
-            tab_data["historical_stock_columns"][key] = value
-        if key in financials_columns:
-            tab_data["financials_columns"][key] = value
-        if key in dividend_split_columns:
-            tab_data["dividend_split_columns"][key] = value
-        if key in holders_columns:
-            tab_data["holders_columns"][key] = value
-        if key in logo_columns:
-            tab_data["logo"][key] = value
-    return tab_data, finance_data
+def yfinance_data(name):
+    yf_stonk = yf.Ticker(name)
+    stonk = Stonk(name, **{**yf_stonk.info, **yf_stonk.financials_data})
+    return stonk
 
 
-def parse_financial_data(stonk):
-    return {
-        "q_dates": [item['date'] for item in stonk.financials_data['earnings']['financialsChart']['quarterly']],
-        "q_rev": [item['revenue'] for item in stonk.financials_data['earnings']['financialsChart']['quarterly']],
-        "q_earn": [item['earnings'] for item in stonk.financials_data['earnings']['financialsChart']['quarterly']],
-        "y_dates": [item['date'] for item in stonk.financials_data['earnings']['financialsChart']['yearly']],
-        "y_rev": [item['revenue'] for item in stonk.financials_data['earnings']['financialsChart']['yearly']],
-        "y_earn": [item['earnings'] for item in stonk.financials_data['earnings']['financialsChart']['yearly']],
-        "q_est_earn": [item['estimate'] for item in stonk.financials_data['earnings']['earningsChart']['quarterly']],
-        "q_actual_earn": [item['actual'] for item in stonk.financials_data['earnings']['earningsChart']['quarterly']],
-        "q_date_earn": [item['date'] for item in stonk.financials_data['earnings']['earningsChart']['quarterly']],
-    }
+def div_and_split(stonk):
+    yf_stonk = yf.Ticker(stonk)
+    hist = yf_stonk.get_history(period=yf.TimePeriods.FiveYears)
+    return yf_stonk.dividends.to_dict(), yf_stonk.splits.to_dict()
+

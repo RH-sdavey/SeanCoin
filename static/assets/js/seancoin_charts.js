@@ -1,10 +1,10 @@
-const maxValue = radial_data.dayHigh;
+const maxValue = chart_data.price_vol_diff.dayHigh;
 const valueToPercent = (val) => Math.round(val * 100) / maxValue;
 const percentToValue = (val) => Math.round(val * maxValue) / 100
-const fiftyTwoWeekmaxValue = radial_data.fiftyTwoHigh;
+const fiftyTwoWeekmaxValue = chart_data.price_vol_diff.fiftyTwoHigh;
 
 const chart_config = {
-    "coin": chart_data,
+
     "chart": {
         "chart": {
             toolbar: {
@@ -27,7 +27,7 @@ const chart_config = {
         },
         xaxis: {
             type: 'datetime',
-            categories: chart_data.dates
+            categories: chart_data.dates.range
         },
         legend: {
             horizontalAlign: 'left'
@@ -46,8 +46,8 @@ const common_chart_config = {
     <!--PRICE CHART-- >
 new ApexCharts(document.querySelector("#priceChart"), {
     series: [{
-        name: chart_config.coin.name,
-        data: chart_config.coin.prices
+        name: chart_data.name,
+        data: chart_data.price_vol_diff.prices
     }],
     subtitle: {
         align: 'left',
@@ -59,8 +59,8 @@ new ApexCharts(document.querySelector("#priceChart"), {
     <!--VOLUME CHART-- >
 new ApexCharts(document.querySelector("#volumeChart"), {
     series: [{
-        name: chart_config.coin.name,
-        data: chart_config.coin.volume
+        name: chart_data.name,
+        data: chart_data.price_vol_diff.volume
     }, ],
     subtitle: {
         text: 'Volume',
@@ -72,8 +72,8 @@ new ApexCharts(document.querySelector("#volumeChart"), {
 <!--DIFF CHART-- >
 new ApexCharts(document.querySelector("#diffChart"), {
     series: [{
-        name: chart_config.coin.name,
-        data: chart_config.coin.open_close_diff
+        name: chart_data.name,
+        data: chart_data.price_vol_diff.open_close_diff
     }, ],
     subtitle: {
         text: 'Price Diff',
@@ -136,7 +136,7 @@ new ApexCharts(document.querySelector("#priceGauge"), {
                 },
                 value: {
                     formatter: function(val) {
-                        return parseInt(radial_data.dayCurrent);
+                        return parseInt(chart_data.price_vol_diff.dayCurrent);
                     },
                     color: '#111',
                     fontSize: '36px',
@@ -225,8 +225,8 @@ high_low_radial_common_config = {
 
     <!--DAY LOW + CURRENT + HIGH-- >
 new ApexCharts(document.querySelector("#dayhighLowChart"), {
-    series: [valueToPercent(radial_data.dayLow),
-        valueToPercent(radial_data.dayCurrent),
+    series: [valueToPercent(chart_data.price_vol_diff.dayLow),
+        valueToPercent(chart_data.price_vol_diff.dayCurrent),
         valueToPercent(maxValue)
     ],
     labels: ['dayLow', 'currentPrice', 'dayHigh'],
@@ -237,9 +237,10 @@ new ApexCharts(document.querySelector("#dayhighLowChart"), {
 
     <!--52 LOW + CURRENT + HIGH-- >
 new ApexCharts(document.querySelector("#fiftyTwoWeekHighLowChart"), {
-    series: [valueToPercent(radial_data.fiftyTwoLow), valueToPercent(
-        radial_data.dayCurrent), valueToPercent(
-        fiftyTwoWeekmaxValue)],
+    series: [valueToPercent(chart_data.price_vol_diff.fiftyTwoLow),
+             valueToPercent(chart_data.price_vol_diff.dayCurrent),
+             valueToPercent(fiftyTwoWeekmaxValue)
+            ],
     labels: ['fiftyTwoWeekLow', 'currentPrice', 'fiftyTwoWeekHigh'],
     ...high_low_radial_common_config
 }).render();
@@ -280,7 +281,7 @@ financial_chart_common_config = {
         }
     },
     xaxis: {
-        categories: chart_data.q_dates
+        categories: chart_data.dates.q_dates
     },
     axisTicks: {
         show: true
@@ -321,11 +322,11 @@ new ApexCharts(document.querySelector("#quarterlyEarningsRevenueChart"), {
     },
     series: [{
             name: "Earnings",
-            data: chart_data.earnings
+            data: chart_data.earnings.earnings
         },
         {
             name: "Revenue",
-            data: chart_data.revenue
+            data: chart_data.revenue.revenue
         }
     ],
 
@@ -359,11 +360,11 @@ new ApexCharts(document.querySelector("#quarterlyEarningsGrowthChart"), {
     },
     series: [{
             name: "Estimated",
-            data: chart_data.est_earnings
+            data: chart_data.earnings.est_earnings
         },
         {
             name: "Actual",
-            data: chart_data.actual_earnings
+            data: chart_data.earnings.actual_earnings
         }
     ],
 
@@ -398,11 +399,11 @@ new ApexCharts(document.querySelector("#yearlyEarningsRevenueChart"), {
     },
     series: [{
             name: "Earnings",
-            data: chart_data.y_earn
+            data: chart_data.earnings.y_earn
         },
         {
             name: "Revenue",
-            data: chart_data.y_revenue
+            data: chart_data.revenue.y_revenue
         }
     ],
 
@@ -429,6 +430,6 @@ new ApexCharts(document.querySelector("#yearlyEarningsRevenueChart"), {
     ],
     ...financial_chart_common_config,
     xaxis: {
-        categories: chart_data.y_dates
+        categories: chart_data.dates.y_dates
     },
 }).render();

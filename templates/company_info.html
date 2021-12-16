@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block mainTitleSpan %}
+<div class="row">
+    <h1>{{ stonk|capitalize }} Company Info</h1>
+    <a href="{{ url_for('stonk_info', stonk=stonk) }}" class="btn btn-secondary btn-lg col-lg-6 disabled" role="button" aria-disabled="true">{{ stonk|capitalize }} Info</a>
+    <a href="{{ url_for('stonk_charts', stonk=stonk) }}" class="btn btn-info btn-lg col-lg-6" role="button">{{ stonk|capitalize }} Charts</a>
+</div>
+{% endblock %}
+
+
+{% block crumbs %}
+{% endblock %}
+
+{% block body %}
+<div class="row">
+</div>
+<div class="row">
+    <div class="col-lg-2">
+      <!-- Recent Activity -->
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Dividend History</h5>
+          {% for time, amount in dividend_hist.items() %}
+          <div class="activity">
+            <div class="activity-item d-flex">
+              <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+              <div class="activity-label">{{ time }}</div>
+              <div class="activity-content">{{ amount }}</div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div><!-- End Recent Activity -->
+    </div>
+    <div class="col-lg-2">
+      <!-- Recent Activity -->
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Split History</h5>
+          {% for time, amount in split_hist.items() %}
+          <div class="activity">
+            <div class="activity-item d-flex">
+              <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+              <div class="activity-label">{{ time }}</div>
+              <div class="activity-content">{{ amount }}</div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div><!-- End Recent Activity -->
+    </div>
+</div>
+
+{% endblock %}
