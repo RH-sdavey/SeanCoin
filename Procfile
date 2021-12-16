@@ -1,1 +1,1 @@
-web: gunicorn main:seanCoin
+web: gunicorn flask_application:seanCoin

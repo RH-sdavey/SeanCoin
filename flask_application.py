@@ -121,3 +121,6 @@ def stonk_info(stonk):
         dividend_hist=dividend,
         split_hist=split
     )
+
+if __name__ == '__main__':
+    seanCoin.run(debug=False)
