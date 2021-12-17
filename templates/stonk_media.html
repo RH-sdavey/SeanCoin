@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block mainTitleSpan %}
+<div class="row">
+    <div class="col-lg-3">
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between"><i class="bi bi-info-circle me-1 text-success"></i>
+                <a href="{{ url_for('stonk_info', stonk=stonk) }}" role="button">{{ stonk|capitalize }} Company/Financial Information</a>
+                <i class="bi bi-dash-square-dotted me-1 text-success"></i>
+            </li>
+            <li class="list-group-item  d-flex justify-content-between "><i class="bi bi-bar-chart me-1 text-success"></i>
+                <a href="{{ url_for('stonk_charts', stonk=stonk) }}" role="button">{{ stonk|capitalize }} Charts</a>
+                <i class="bi bi-dash-square-dotted me-1 text-success"></i>
+            </li>
+            <li class="list-group-item  d-flex justify-content-between "><i class="bi bi-newspaper me-1 text-success"></i>
+                <a href="{{ url_for('stonk_media', stonk=stonk) }}" role="button">{{ stonk|capitalize }} Media</a>
+                <i class="bi bi-check-square-fill me-1 text-success"></i>
+            </li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
+
+{% block crumbs %}
+{% endblock %}
+
+{% block body %}
+<div class="row">
+    <!-- Left side columns -->
+    <div class="col-lg-6">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card info-card sales-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Latest {{ stonk }} Articles</h5>
+                        <table class="table datatable">
+                            <thead>
+                            <tr>
+                                <th scope="col">Link</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for i, r in news.iterrows() %}
+                            <tr>
+                                <td><a href="{{ r.get('Article Link') }}">{{ r.get('News Headline') }}</a></td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
