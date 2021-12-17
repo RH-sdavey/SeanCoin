@@ -2,9 +2,18 @@
 
 {% block mainTitleSpan %}
 <div class="row">
-    <h1>{{ stonk|capitalize }} Charts</h1>
-    <a href="{{ url_for('stonk_info', stonk=stonk) }}" class="btn btn-info btn-lg col-lg-6" role="button" >{{ stonk|capitalize }} Info</a>
-    <a href="{{ url_for('stonk_charts', stonk=stonk) }}" class="btn btn-secondary btn-lg disabled col-lg-6" role="button" aria-disabled="true">{{ stonk|capitalize }} Charts</a>
+    <div class="col-lg-3">
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between"><i class="bi bi-info-circle me-1 text-success"></i>
+                <a href="{{ url_for('stonk_info', stonk=stonk) }}" role="button">{{ stonk|capitalize }} Company/Financial Information</a>
+                <i class="bi bi-dash-square-dotted me-1 text-success"></i>
+            </li>
+            <li class="list-group-item  d-flex justify-content-between "><i class="bi bi-bar-chart me-1 text-success"></i>
+                <a href="{{ url_for('stonk_charts', stonk=stonk) }}" role="button">{{ stonk|capitalize }} Charts</a>
+                <i class="bi bi-check-square-fill me-1 text-success"></i>
+            </li>
+        </ul>
+    </div>
 </div>
 {% endblock %}
 

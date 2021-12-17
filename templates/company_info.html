@@ -2,11 +2,18 @@
 
 {% block mainTitleSpan %}
 <div class="row">
-    <h1>{{ stonk|capitalize }} Company Info</h1>
-    <a href="{{ url_for('stonk_info', stonk=stonk) }}" class="btn btn-secondary btn-lg col-lg-6 disabled" role="button"
-       aria-disabled="true">{{ stonk|capitalize }} Info</a>
-    <a href="{{ url_for('stonk_charts', stonk=stonk) }}" class="btn btn-info btn-lg col-lg-6" role="button">{{
-        stonk|capitalize }} Charts</a>
+    <div class="col-lg-3">
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between"><i class="bi bi-info-circle me-1 text-success"></i>
+                <a href="{{ url_for('stonk_info', stonk=stonk) }}" role="button">{{ stonk|capitalize }} Company/Financial Information</a>
+                <i class="bi bi-check-square-fill me-1 text-success"></i>
+            </li>
+            <li class="list-group-item  d-flex justify-content-between "><i class="bi bi-bar-chart me-1 text-success"></i>
+                <a href="{{ url_for('stonk_charts', stonk=stonk) }}" role="button">{{ stonk|capitalize }} Charts</a>
+                <i class="bi bi-dash-square-dotted me-1 text-success"></i>
+            </li>
+        </ul>
+    </div>
 </div>
 {% endblock %}
 
@@ -225,8 +232,49 @@
     <div class="col-lg-8">
         <div class="card info-card sales-card">
             <div class="card-body">
-                <h5 class="card-title">Balance Sheet</h5>
-                {{ stonk_obj.balance_sheet.to_html()|safe }}
+                <h5 class="card-title">Large Datasets</h5>
+                <p>
+                  <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
+                          data-bs-target="#collapseBalance" aria-expanded="false" aria-controls="collapseBalance">
+                    Balance Sheet
+                  </button>
+                  <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
+                          data-bs-target="#collapseQuartBalance" aria-expanded="false" aria-controls="collapseQuartBalance">
+                    Quarterly Balance Sheet
+                  </button>
+                  <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
+                          data-bs-target="#collapseCashflow" aria-expanded="false" aria-controls="collapseCashflow">
+                    CashFlow
+                  </button>
+                  <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
+                          data-bs-target="#collapseQuartFinance" aria-expanded="false" aria-controls="collapseQuartFinance">
+                    Quarterly Financials
+                  </button>
+                </p>
+                <div class="collapse" id="collapseBalance">
+                  <div class="card card-body">
+                      <h4 class="card-title">Balance Sheet</h4>
+                    {{ stonk_obj.balance_sheet.to_html(classes=["table-bordered", "table-striped", "table-hover"])|safe }}
+                  </div>
+                </div>
+                <div class="collapse" id="collapseQuartBalance">
+                  <div class="card card-body">
+                      <h4 class="card-title">Quarterly Balance Sheet</h4>
+                    {{ stonk_obj.quarterly_balance_sheet.to_html(classes=["table-bordered", "table-striped", "table-hover"])|safe }}
+                  </div>
+                </div>
+                <div class="collapse" id="collapseCashflow">
+                  <div class="card card-body">
+                      <h4 class="card-title">CashFlow</h4>
+                    {{ stonk_obj.cashflow.to_html(classes=["table-bordered", "table-striped", "table-hover"])|safe }}
+                  </div>
+                </div>
+                <div class="collapse" id="collapseQuartFinance">
+                  <div class="card card-body">
+                      <h4 class="card-title">Quarterly Financials</h4>
+                    {{ stonk_obj.quarterly_financials.to_html(classes=["table-bordered", "table-striped", "table-hover"])|safe }}
+                  </div>
+                </div>
             </div>
         </div>
     </div>

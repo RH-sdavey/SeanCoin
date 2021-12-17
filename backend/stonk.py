@@ -18,6 +18,9 @@ class Stonk:
         self.splits = self.yf_stonk.splits.to_dict()
         self.earnings = self.yf_stonk.earnings.to_dict()
         self.balance_sheet = self.yf_stonk.balance_sheet
+        self.quarterly_balance_sheet = self.yf_stonk.quarterly_balance_sheet
+        self.quarterly_financials = self.yf_stonk.quarterly_financials
+        self.cashflow = self.yf_stonk.cashflow
         self.company_data = {column: self.yf_stonk.info[column] for column in company_columns}
         self.current_stock = {column: self.yf_stonk.info[column] for column in current_stock_columns}
         self.historical_stock = {column: self.yf_stonk.info[column] for column in historical_stock_columns}
