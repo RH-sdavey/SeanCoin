@@ -5,16 +5,14 @@ from flask import Flask, render_template
 from werkzeug.routing import BuildError
 from web3.exceptions import BlockNotFound
 
+from backend import lib
+from backend.stonk import Stonk
 from backend.blockchain import BlockChain, Account
 from backend.backend import (
     normalize_balance,
     calc_perc_of_transactions,
     calc_val_of_all_transactions_in_blocks,
-    pandas_price_data,
-    yfinance_data,
-    div_and_split
 )
-from backend.lib import all_crypto as ac
 
 bc = BlockChain()
 seanCoin = Flask(__name__)
@@ -22,7 +20,7 @@ seanCoin = Flask(__name__)
 
 @seanCoin.context_processor
 def all_crypto():
-    return dict(all_crypto=ac)
+    return dict(all_crypto=lib.all_crypto)
 
 
 @seanCoin.route('/')
@@ -93,20 +91,20 @@ def account(account):
 
 @seanCoin.route("/coin-charts/<coin>")
 def coin_charts(coin):
-    pass_dict = pandas_price_data(coin, crypto=True)
-    return render_template(
-        "crypto_charts.html",
-        data=pass_dict
-    )
+    # pass_dict = pandas_price_data(coin, crypto=True)
+    return "ok"
+    # return render_template(
+    #     "crypto_charts.html",
+    #     data=pass_dict
+    # )
 
 
 @seanCoin.route("/stonk-charts/<stonk>")
 def stonk_charts(stonk):
-    pass_dict = pandas_price_data(stonk)
-    stonk = yfinance_data(stonk)
+    fuck_the_word_stonk = Stonk(stonk)
     return render_template(
         "stonk_charts.html",
-        data=pass_dict,
+        stonk_obj=fuck_the_word_stonk,
         stonk=stonk,
         getattr=getattr
     )
@@ -114,13 +112,18 @@ def stonk_charts(stonk):
 
 @seanCoin.route("/stonk_info/<stonk>")
 def stonk_info(stonk):
-    dividend, split = div_and_split(stonk)
+    fuck_the_word_stonk = Stonk(stonk)
+    if not lib.stonk_object:
+        lib.stonk_object = fuck_the_word_stonk
+    elif not lib.stonk_object == fuck_the_word_stonk:
+        lib.stonk_object = fuck_the_word_stonk
+
     return render_template(
         "company_info.html",
         stonk=stonk,
-        dividend_hist=dividend,
-        split_hist=split
+        stonk_obj=fuck_the_word_stonk,
     )
+
 
 if __name__ == '__main__':
     seanCoin.run(debug=False)

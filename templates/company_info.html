@@ -3,8 +3,10 @@
 {% block mainTitleSpan %}
 <div class="row">
     <h1>{{ stonk|capitalize }} Company Info</h1>
-    <a href="{{ url_for('stonk_info', stonk=stonk) }}" class="btn btn-secondary btn-lg col-lg-6 disabled" role="button" aria-disabled="true">{{ stonk|capitalize }} Info</a>
-    <a href="{{ url_for('stonk_charts', stonk=stonk) }}" class="btn btn-info btn-lg col-lg-6" role="button">{{ stonk|capitalize }} Charts</a>
+    <a href="{{ url_for('stonk_info', stonk=stonk) }}" class="btn btn-secondary btn-lg col-lg-6 disabled" role="button"
+       aria-disabled="true">{{ stonk|capitalize }} Info</a>
+    <a href="{{ url_for('stonk_charts', stonk=stonk) }}" class="btn btn-info btn-lg col-lg-6" role="button">{{
+        stonk|capitalize }} Charts</a>
 </div>
 {% endblock %}
 
@@ -13,43 +15,220 @@
 {% endblock %}
 
 {% block body %}
+
 <div class="row">
-</div>
-<div class="row">
-    <div class="col-lg-2">
-      <!-- Recent Activity -->
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Dividend History</h5>
-          {% for time, amount in dividend_hist.items() %}
-          <div class="activity">
-            <div class="activity-item d-flex">
-              <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
-              <div class="activity-label">{{ time }}</div>
-              <div class="activity-content">{{ amount }}</div>
+    <!-- Left side columns -->
+    <div class="col-lg-6">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card info-card sales-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Company info</h5>
+                        <table class="table datatable">
+                            <thead>
+                            <tr>
+                                <th scope="col">Key</th>
+                                <th scope="col">Value</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for key, value in stonk_obj.company_data.items() %}
+                            <tr>
+                                <td>{{ key }}</td>
+                                <td>{{ value }}</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-          </div>
-          {% endfor %}
+            <div class="col-md-4">
+                <div class="card info-card customers-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Actions History</h5>
+                        {% for time, amount in stonk_obj.div_split.items() %}
+                        <div class="activity">
+                            <div class="activity-item d-flex">
+                                <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                                <div class="activity-label">{{ time }}</div>
+                                <div class="activity-content">{{ amount }}</div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="card info-card customers-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Yearly Revenue</h5>
+                        {% for time, amount in stonk_obj.earnings['Revenue'].items() %}
+                        <div class="activity">
+                            <div class="activity-item d-flex">
+                                <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                                <div class="activity-label">{{ time }}</div>
+                                <div class="activity-content">{{ amount }}</div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card info-card customers-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Dividends History</h5>
+                        {% for time, amount in stonk_obj.dividends.items() %}
+                        <div class="activity">
+                            <div class="activity-item d-flex">
+                                <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                                <div class="activity-label">{{ time }}</div>
+                                <div class="activity-content">{{ amount }}</div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card info-card customers-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Split History</h5>
+                        {% for time, amount in stonk_obj.splits.items() %}
+                        <div class="activity">
+                            <div class="activity-item d-flex">
+                                <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                                <div class="activity-label">{{ time }}</div>
+                                <div class="activity-content">{{ amount }}</div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="card info-card customers-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Earnings Diff</h5>
+                        {% for time, amount in stonk_obj.earnings['Earnings'].items() %}
+                        <div class="activity">
+                            <div class="activity-item d-flex">
+                                <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                                <div class="activity-label">{{ time }}</div>
+                                <div class="activity-content">{{ amount }}</div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
         </div>
-      </div><!-- End Recent Activity -->
+        <div class="row">
+        </div>
     </div>
-    <div class="col-lg-2">
-      <!-- Recent Activity -->
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Split History</h5>
-          {% for time, amount in split_hist.items() %}
-          <div class="activity">
-            <div class="activity-item d-flex">
-              <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
-              <div class="activity-label">{{ time }}</div>
-              <div class="activity-content">{{ amount }}</div>
+
+    <!--              THE LEFT ENDS HERE     -->
+    <!--              THE RIGHT STARTS HERE     -->
+
+    <div class="col-lg-6">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card info-card sales-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Logo</h5>
+                        <img src="{{ stonk_obj.logo['logo_url'] }}" style="width:14em; height:14em;" class="card-img"
+                             alt="...">
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Current Stock info</h5>
+                        <table class="table datatable">
+                            <thead>
+                            <tr>
+                                <th scope="col">Key</th>
+                                <th scope="col">Value</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for key, value in stonk_obj.current_stock.items() %}
+                            <tr>
+                                <td>{{ key }}</td>
+                                <td>{{ value }}</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card info-card sales-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Holders History</h5>
+                        {% for time, amount in stonk_obj.holders.items() %}
+                        <div class="activity">
+                            <div class="activity-item d-flex">
+                                <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                                <div class="activity-label">{{ time }}</div>
+                                <div class="activity-content">{{ amount }}</div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
-          </div>
-          {% endfor %}
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Historical Stock info</h5>
+                        <table class="table datatable">
+                            <thead>
+                            <tr>
+                                <th scope="col">Key</th>
+                                <th scope="col">Value</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for key, value in stonk_obj.historical_stock.items() %}
+                            <tr>
+                                <td>{{ key }}</td>
+                                <td>{{ value }}</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card info-card sales-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Financial info</h5>
+                        <table class="table datatable">
+                            <thead>
+                            <tr>
+                                <th scope="col">Key</th>
+                                <th scope="col">Value</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for key, value in stonk_obj.financials.items() %}
+                            <tr>
+                                <td>{{ key }}</td>
+                                <td>{{ value }}</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div><!-- End Recent Activity -->
     </div>
 </div>
 
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card info-card sales-card">
+            <div class="card-body">
+                <h5 class="card-title">Balance Sheet</h5>
+                {{ stonk_obj.balance_sheet.to_html()|safe }}
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

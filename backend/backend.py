@@ -1,9 +1,5 @@
-import datetime as dt
-
-import pandas_datareader as pdr
 import yfinance_ez as yf
 
-from stonk import Stonk
 
 
 def normalize_balance(balance: str) -> str:
@@ -42,38 +38,6 @@ def calc_perc_of_transactions(list_of_blocks):
     return total_txs, list_of_blocks
 
 
-def pandas_price_data(name, crypto=False) -> dict:
-    dec_place = 8 if crypto else 2
-    start = dt.datetime(2019, 1, 1)
-    end = dt.datetime.now()
-    data = pdr.DataReader(name, 'yahoo', start.strftime("%d %b %Y"), end.strftime("%d %b %Y"))
-
-    data = data.reset_index(level=[0])
-    date_range = [item.strftime('%d %b %Y') for item in data['Date']]
-
-    open_price = [round(item, dec_place) for item in data['Open'].to_list()]
-    close = [round(item, dec_place) for item in data['Close'].to_list()]
-    volume = [round(item, dec_place) for item in data['Volume'].to_list()]
-    diff = [round(cl - op, dec_place) for op, cl in list(zip(open_price, close))]
-
-    return {
-        "name": name,
-        "open": open_price,
-        "close": close,
-        "volume": volume,
-        "diff": diff,
-        "date_range": date_range
-    }
 
 
-def yfinance_data(name):
-    yf_stonk = yf.Ticker(name)
-    stonk = Stonk(name, **{**yf_stonk.info, **yf_stonk.financials_data})
-    return stonk
-
-
-def div_and_split(stonk):
-    yf_stonk = yf.Ticker(stonk)
-    hist = yf_stonk.get_history(period=yf.TimePeriods.FiveYears)
-    return yf_stonk.dividends.to_dict(), yf_stonk.splits.to_dict()
 

@@ -2,9 +2,9 @@
 
 {% block mainTitleSpan %}
 <div class="row">
-    <h1>{{ stonk.name|capitalize }} Charts</h1>
-    <a href="{{ url_for('stonk_info', stonk=stonk.name) }}" class="btn btn-info btn-lg col-lg-6" role="button" >{{ stonk.name|capitalize }} Info</a>
-    <a href="{{ url_for('stonk_charts', stonk=stonk.name) }}" class="btn btn-secondary btn-lg disabled col-lg-6" role="button" aria-disabled="true">{{ stonk.name|capitalize }} Charts</a>
+    <h1>{{ stonk|capitalize }} Charts</h1>
+    <a href="{{ url_for('stonk_info', stonk=stonk) }}" class="btn btn-info btn-lg col-lg-6" role="button" >{{ stonk|capitalize }} Info</a>
+    <a href="{{ url_for('stonk_charts', stonk=stonk) }}" class="btn btn-secondary btn-lg disabled col-lg-6" role="button" aria-disabled="true">{{ stonk|capitalize }} Charts</a>
 </div>
 {% endblock %}
 
@@ -13,54 +13,6 @@
 {% endblock %}
 
 {% block body %}
-<!--<div class="card mb-3" style="max-width: 100%;">-->
-<!--    <div class="row no-gutters">-->
-<!--        <div class="col-md-2">-->
-<!--            <img src="{{ stonk.logo_url }}" style="width:10em; height:10em;" class="card-img" alt="...">-->
-<!--        </div>-->
-<!--        <div class="col-md-10">-->
-<!--            <div class="card-body">-->
-<!--                <ul class="nav nav-tabs d-flex" id="myTabjustified" role="tablist">-->
-<!--                    {% for column in stonk.column_names %}-->
-<!--                    <li class="nav-item flex-fill" role="presentation">-->
-<!--                        <button class="nav-link w-100" id="{{ column }}-tab" data-bs-toggle="tab"-->
-<!--                                data-bs-target="#{{ column }}-justified" type="button" role="tab" aria-controls="{{ column }}"-->
-<!--                                aria-selected="false">{{ column|replace('_columns','') }}-->
-<!--                        </button>-->
-<!--                    </li>-->
-<!--                    {% endfor %}-->
-<!--                </ul>-->
-<!--                <div class="tab-content pt-2" id="myTabjustifiedContent">-->
-<!--                    {% for column in stonk.column_names %}-->
-<!--                    <div class="tab-pane fade" id="{{ column }}-justified" role="tabpanel"-->
-<!--                         aria-labelledby="{{ column }}-tab">-->
-<!--                        <table class="table table-striped">-->
-<!--                            <thead>-->
-<!--                            <tr>-->
-<!--                                <th scope="col"></th>-->
-<!--                                <th scope="col"></th>-->
-<!--                            </tr>-->
-<!--                            </thead>-->
-<!--                            <tbody>-->
-<!--                            {% for column in stonk.column_names %}-->
-<!--                                {% set section = getattr(stonk, column) %}-->
-<!--                                    {% for key, val in section.items() %}-->
-<!--                            <tr>-->
-<!--                                <td>{{ key|safe }}</td>-->
-<!--                                <td>{{ val|safe }}</td>-->
-<!--                            </tr>-->
-<!--                                    {% endfor %}-->
-<!--                            {% endfor %}-->
-<!--                            </tbody>-->
-<!--                        </table>-->
-<!--                    </div>-->
-<!--                    {% endfor %}-->
-
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
 
 <div class="row">
     <div class="col-lg-3">
@@ -137,41 +89,37 @@
 <script src="{{ url_for('static', filename='assets/vendor/apexcharts/apexcharts.min.js') }}"></script>
 <script type="text/javascript">
     const chart_data = {
-        "name": "{{ data['name']|string }}",
+        "name": "{{ stonk_obj.name|string }}",
         "dates": {
-            "range": {{ data['date_range']|safe }},
-            "q_dates": {{  stonk.financial_data['q_dates']|safe }},
-            "y_dates": {{  stonk.financial_data['y_dates']|safe }},
+            "range": {{ stonk_obj.price_history['date_range']|safe }},
+            "q_dates": {{ stonk_obj.financial_data['q_dates']|safe }},
+            "y_dates": {{ stonk_obj.financial_data['y_dates']|safe }},
         },
         "price_vol_diff": {
-            "prices": {{ data['close'] }},
-            "volume": {{ data['volume'] }},
-            "open_close_diff": {{ data['diff']|safe }},
-            "dayLow": {{ stonk.dayLow }},
-            "dayHigh": {{ stonk.dayHigh }},
-            "dayCurrent": {{ stonk.currentPrice }},
-            "fiftyTwoHigh": {{ stonk.fiftyTwoWeekHigh }},
-            "fiftyTwoLow": {{ stonk.fiftyTwoWeekLow }},
+            "prices": {{ stonk_obj.price_history['close'] }},
+            "volume": {{ stonk_obj.price_history['volume'] }},
+            "open_close_diff": {{ stonk_obj.price_history['diff']|safe }},
+            "dayLow": {{ stonk_obj.yf_stonk.info.dayLow }},
+            "dayHigh": {{ stonk_obj.yf_stonk.info.dayHigh }},
+            "dayCurrent": {{ stonk_obj.yf_stonk.info.currentPrice }},
+            "fiftyTwoHigh": {{ stonk_obj.yf_stonk.info.fiftyTwoWeekHigh }},
+            "fiftyTwoLow": {{ stonk_obj.yf_stonk.info.fiftyTwoWeekLow }},
         },
         "earnings": {
-            "est_earnings": {{ stonk.financial_data['q_est_earn'] }},
-            "earnings": {{ stonk.financial_data['q_earn'] }},
-            "actual_earnings": {{ stonk.financial_data['q_actual_earn'] }},
-            "q_earn" : {{ stonk.financial_data['q_date_earn']|safe }},
-            "y_earn" : {{ stonk.financial_data['y_earn'] }},
+            "est_earnings": {{ stonk_obj.financial_data['q_est_earn'] }},
+            "earnings": {{ stonk_obj.financial_data['q_earn'] }},
+            "actual_earnings": {{ stonk_obj.financial_data['q_actual_earn'] }},
+            "q_earn" : {{ stonk_obj.financial_data['q_date_earn']|safe }},
+            "y_earn" : {{ stonk_obj.financial_data['y_earn'] }},
         },
         "revenue": {
-            "revenue": {{ stonk.financial_data['q_rev'] }},
-            "y_revenue": {{ stonk.financial_data['y_rev'] }},
+            "revenue": {{ stonk_obj.financial_data['q_rev'] }},
+            "y_revenue": {{ stonk_obj.financial_data['y_rev'] }},
         },
     };
 
 
 </script>
 <script type="text/javascript" src="{{ url_for('static', filename='/assets/js/seancoin_charts.js') }}"></script>
-<script type="text/javascript">
-    document.getElementById("company_columns-justified").classList.add('active');
-    document.getElementById("company_columns-justified").classList.add('show');
 
-</script>
 {% endblock %}

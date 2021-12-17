@@ -68,3 +68,6 @@ all_crypto = {
     "matic": 'MATIC-USD',
     "mana": 'MANA-USD',
 }
+
+
+stonk_object = None
