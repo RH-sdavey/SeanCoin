@@ -6,6 +6,7 @@ from werkzeug.routing import BuildError
 from web3.exceptions import BlockNotFound
 
 from backend import lib
+from backend.media_scraper import StonkMedia
 from backend.stonk import Stonk
 from backend.blockchain import BlockChain, Account
 from backend.backend import (
@@ -118,10 +119,23 @@ def stonk_info(stonk):
     elif not lib.stonk_object == fuck_the_word_stonk:
         lib.stonk_object = fuck_the_word_stonk
 
+    stonk_media = StonkMedia(stonk)
     return render_template(
         "company_info.html",
         stonk=stonk,
         stonk_obj=fuck_the_word_stonk,
+        insiders=stonk_media.parse_insiders_from_html()
+    )
+
+
+@seanCoin.route("/stonk_media/<stonk>")
+def stonk_media(stonk):
+    stonk_media = StonkMedia(stonk)
+    return render_template(
+        "stonk_media.html",
+        stonk=stonk,
+        news=stonk_media.parse_news_from_html(),
+        insiders=stonk_media.parse_insiders_from_html()
     )
 
 
