@@ -1,4 +1,6 @@
 import datetime as dt
+
+import pandas as pd
 import yfinance_ez as yf
 
 from backend.lib import (
@@ -13,8 +15,9 @@ class Stonk:
         self.yf_stonk = yf.Ticker(self.name)
         self.hist = self.yf_stonk.get_history(period=yf.TimePeriods.FiveYears)
         self.price_history = self.price_history()
+        self.actions = self.fix_dataframe(self.yf_stonk.actions)
         self.financial_data = self.get_financial_data()
-        self.dividends = self.yf_stonk.dividends.to_dict()
+        self.dividends = self.fix_dataframe(self.yf_stonk.dividends)
         self.splits = self.yf_stonk.splits.to_dict()
         self.earnings = self.yf_stonk.earnings.to_dict()
         self.balance_sheet = self.yf_stonk.balance_sheet
@@ -25,12 +28,17 @@ class Stonk:
         self.current_stock = {column: self.yf_stonk.info[column] for column in current_stock_columns}
         self.historical_stock = {column: self.yf_stonk.info[column] for column in historical_stock_columns}
         self.financials = {column: self.yf_stonk.info[column] for column in financials_columns}
-        self.div_split = {column: self.yf_stonk.info[column] for column in dividend_split_columns}
         self.holders = {column: self.yf_stonk.info[column] for column in holders_columns}
         self.logo = {column: self.yf_stonk.info[column] for column in logo_columns}
 
     def __eq__(self, other):
         return self.name == other.name
+
+    @staticmethod
+    def fix_dataframe(d):
+        d = d.reset_index(level=[0])
+        d['Date'] = pd.to_datetime(d['Date']).apply(lambda x: x.date())
+        return d
 
     def get_financial_data(self):
         return {

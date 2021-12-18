@@ -1,5 +1,6 @@
 import datetime
 
+import pandas as pd
 from flask import Flask, render_template
 
 from werkzeug.routing import BuildError
@@ -102,10 +103,10 @@ def coin_charts(coin):
 
 @seanCoin.route("/stonk-charts/<stonk>")
 def stonk_charts(stonk):
-    fuck_the_word_stonk = Stonk(stonk)
+    stonk_obj = Stonk(stonk)
     return render_template(
         "stonk_charts.html",
-        stonk_obj=fuck_the_word_stonk,
+        stonk_obj=stonk_obj,
         stonk=stonk,
         getattr=getattr
     )
@@ -113,29 +114,29 @@ def stonk_charts(stonk):
 
 @seanCoin.route("/stonk_info/<stonk>")
 def stonk_info(stonk):
-    fuck_the_word_stonk = Stonk(stonk)
+    stonk_obj = Stonk(stonk)
     if not lib.stonk_object:
-        lib.stonk_object = fuck_the_word_stonk
-    elif not lib.stonk_object == fuck_the_word_stonk:
-        lib.stonk_object = fuck_the_word_stonk
+        lib.stonk_object = stonk_obj
+    elif not lib.stonk_object == stonk_obj:
+        lib.stonk_object = stonk_obj
 
-    stonk_media = StonkMedia(stonk)
+    s_media = StonkMedia(stonk)
     return render_template(
         "company_info.html",
         stonk=stonk,
-        stonk_obj=fuck_the_word_stonk,
-        insiders=stonk_media.parse_insiders_from_html()
+        stonk_obj=stonk_obj,
+        insiders=s_media.parse_insiders_from_html()
     )
 
 
 @seanCoin.route("/stonk_media/<stonk>")
 def stonk_media(stonk):
-    stonk_media = StonkMedia(stonk)
+    s_media = StonkMedia(stonk)
     return render_template(
         "stonk_media.html",
         stonk=stonk,
-        news=stonk_media.parse_news_from_html(),
-        insiders=stonk_media.parse_insiders_from_html()
+        news=s_media.parse_news_from_html(),
+        insiders=s_media.parse_insiders_from_html()
     )
 
 
