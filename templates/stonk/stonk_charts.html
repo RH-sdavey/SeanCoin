@@ -2,14 +2,18 @@
 
 {% block mainTitleSpan %}
 <div class="row">
+        <div class="col-md-auto">
+        <img src="{{ stonk_obj.logo['logo_url'] }}" style="width:5em; height:5em;" class="card-img"
+             alt="...">
+    </div>
     <div class="col-lg-3">
         <ul class="list-group">
             <li class="list-group-item d-flex justify-content-between"><i class="bi bi-info-circle me-1 text-success"></i>
-                <a href="{{ url_for('stonk_info', stonk=stonk) }}" role="button">{{ stonk|capitalize }} Information</a>
+                <a href="{{ url_for('stonk_info', stonk_name=stonk) }}" role="button">{{ stonk|capitalize }} Information</a>
                 <i class="bi bi-dash-square-dotted me-1 text-success"></i>
             </li>
             <li class="list-group-item  d-flex justify-content-between "><i class="bi bi-bar-chart me-1 text-success"></i>
-                <a href="{{ url_for('stonk_charts', stonk=stonk) }}" role="button">{{ stonk|capitalize }} Charts</a>
+                <a href="{{ url_for('stonk_charts', stonk_name=stonk) }}" role="button">{{ stonk|capitalize }} Charts</a>
                 <i class="bi bi-check-square-fill me-1 text-success"></i>
             </li>
         </ul>
@@ -91,6 +95,15 @@
             </div>
         </div>
     </div>
+    <div class="col-lg-4">
+        <div class="card">
+            <h5 class="card-title">Recommendation Info</h5>
+
+            <div class="card-body">
+                <div id="recommendationChart"></div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -124,10 +137,14 @@
             "revenue": {{ stonk_obj.financial_data['q_rev'] }},
             "y_revenue": {{ stonk_obj.financial_data['y_rev'] }},
         },
+        "latest_rec": {
+            "rec": {{ stonk_obj.parse_latest_recs().keys()|list|safe }},
+            "count": {{ stonk_obj.parse_latest_recs().values()|list }},
+        }
     };
 
 
 </script>
-<script type="text/javascript" src="{{ url_for('static', filename='/assets/js/seancoin_charts.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='/assets/js/stonk_charts.js') }}"></script>
 
 {% endblock %}

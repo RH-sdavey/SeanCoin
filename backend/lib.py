@@ -69,5 +69,7 @@ all_crypto = {
     "mana": 'MANA-USD',
 }
 
+all_stonk = ["GME", "AMC", "BB", "KOSS", "BBBY", "HOOD"]
+
 
 stonk_object = None

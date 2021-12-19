@@ -5,7 +5,7 @@ import yfinance_ez as yf
 
 from backend.lib import (
     company_columns, current_stock_columns, historical_stock_columns,
-    financials_columns, dividend_split_columns, holders_columns, logo_columns
+    financials_columns, holders_columns, logo_columns
 )
 
 
@@ -58,7 +58,7 @@ class Stonk:
         start = dt.datetime(2019, 1, 1)
         end = dt.datetime.now()
         data = self.yf_stonk.get_history(start=start, end=end)
-        data = data.reset_index(level=[0])
+        data = self.fix_dataframe(data)
 
         open_price = [round(item, dec_place) for item in data['Open'].to_list()]
         close = [round(item, dec_place) for item in data['Close'].to_list()]
@@ -77,5 +77,14 @@ class Stonk:
             "volume": volume,
             "diff": diff,
             "date_range": date_range,
-
         }
+
+    def parse_latest_recs(self):
+        d = self.yf_stonk.recommendations
+        return dict(
+            d.sort_values(
+                ['Firm', 'Date']
+            ).drop_duplicates(
+                'Firm', keep='last'
+            ).groupby('To Grade').count().to_dict()['Action']
+        )

@@ -1,7 +1,6 @@
 import datetime
 
-import pandas as pd
-from flask import Flask, render_template
+from flask import Flask, render_template, url_for
 
 from werkzeug.routing import BuildError
 from web3.exceptions import BlockNotFound
@@ -9,6 +8,7 @@ from web3.exceptions import BlockNotFound
 from backend import lib
 from backend.media_scraper import StonkMedia
 from backend.stonk import Stonk
+from backend.crypto import Crypto
 from backend.blockchain import BlockChain, Account
 from backend.backend import (
     normalize_balance,
@@ -23,6 +23,11 @@ seanCoin = Flask(__name__)
 @seanCoin.context_processor
 def all_crypto():
     return dict(all_crypto=lib.all_crypto)
+
+
+@seanCoin.context_processor
+def all_stonk():
+    return dict(all_stonk=lib.all_stonk)
 
 
 @seanCoin.route('/')
@@ -91,39 +96,51 @@ def account(account):
     )
 
 
-@seanCoin.route("/coin-charts/<coin>")
-def coin_charts(coin):
-    # pass_dict = pandas_price_data(coin, crypto=True)
-    return "ok"
-    # return render_template(
-    #     "crypto/crypto_charts.html",
-    #     data=pass_dict
-    # )
+@seanCoin.route("/crypto-charts/<crypto_name>")
+def crypto_charts(crypto_name):
+    crypto_obj = Crypto(crypto_name)
+    return render_template(
+        "crypto/crypto_charts.html",
+        crypto_obj=crypto_obj,
+        crypto_name=crypto_name,
+    )
 
 
-@seanCoin.route("/stonk-charts/<stonk>")
-def stonk_charts(stonk):
-    stonk_obj = Stonk(stonk)
+@seanCoin.route("/crypto-info/<crypto_name>")
+def crypto_info(crypto_name):
+    crypto_obj = Crypto(crypto_name)
+
+    return render_template(
+        "crypto/crypto_info.html",
+        crypto_obj=crypto_obj,
+        crypto_name=crypto_name,
+        type=type
+    )
+
+
+@seanCoin.route("/stonk-charts/<stonk_name>")
+def stonk_charts(stonk_name):
+    stonk_obj = Stonk(stonk_name)
     return render_template(
         "stonk/stonk_charts.html",
         stonk_obj=stonk_obj,
-        stonk=stonk,
+        stonk=stonk_name,
         getattr=getattr
     )
 
 
-@seanCoin.route("/stonk_info/<stonk>")
-def stonk_info(stonk):
-    stonk_obj = Stonk(stonk)
+@seanCoin.route("/stonk_info/<stonk_name>")
+def stonk_info(stonk_name):
+    stonk_obj = Stonk(stonk_name)
     if not lib.stonk_object:
         lib.stonk_object = stonk_obj
     elif not lib.stonk_object == stonk_obj:
         lib.stonk_object = stonk_obj
 
-    s_media = StonkMedia(stonk)
+    s_media = StonkMedia(stonk_name)
     return render_template(
         "stonk/stonk_info.html",
-        stonk=stonk,
+        stonk=stonk_name,
         stonk_obj=stonk_obj,
         stonk_media=s_media,
     )

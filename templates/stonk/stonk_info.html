@@ -2,16 +2,22 @@
 
 {% block mainTitleSpan %}
 <div class="row">
+    <div class="col-md-auto">
+        <img src="{{ stonk_obj.logo['logo_url'] }}" style="width:5em; height:5em;" class="card-img"
+             alt="...">
+    </div>
     <div class="col-lg-3">
         <ul class="list-group">
             <li class="list-group-item d-flex justify-content-between"><i
                     class="bi bi-info-circle me-1 text-success"></i>
-                <a href="{{ url_for('stonk_info', stonk=stonk) }}" role="button">{{ stonk|capitalize }} Information</a>
+                <a href="{{ url_for('stonk_info', stonk_name=stonk) }}" role="button">{{ stonk|capitalize }}
+                    Information</a>
                 <i class="bi bi-check-square-fill me-1 text-success"></i>
             </li>
             <li class="list-group-item  d-flex justify-content-between "><i
                     class="bi bi-bar-chart me-1 text-success"></i>
-                <a href="{{ url_for('stonk_charts', stonk=stonk) }}" role="button">{{ stonk|capitalize }} Charts</a>
+                <a href="{{ url_for('stonk_charts', stonk_name=stonk) }}" role="button">{{ stonk|capitalize }}
+                    Charts</a>
                 <i class="bi bi-dash-square-dotted me-1 text-success"></i>
             </li>
         </ul>
@@ -28,14 +34,12 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">{{ stonk }}</h5>
+                <h5 class="card-title">{{ stonk_obj.yf_stonk.info['longName'] }}</h5>
 
-                <!-- Vertical Pills Tabs -->
+                <!-- SIDE PILLS -->
                 <div class="d-flex align-items-start">
                     <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist"
                          aria-orientation="vertical">
-                        <img src="{{ stonk_obj.logo['logo_url'] }}" style="width:100%; height:100%;" class="card-img"
-                             alt="...">
                         <button class="nav-link active" id="v-pills-Info-tab" data-bs-toggle="pill"
                                 data-bs-target="#v-pills-Info" type="button" role="tab" aria-controls="v-pills-Info"
                                 aria-selected="true">Info
@@ -57,7 +61,6 @@
                                 aria-controls="v-pills-Media" aria-selected="false">Media
                         </button>
                     </div>
-
                     <!-- END OF SIDE PILLS -->
                     <!-- START OF CONTENTS -->
                     <!-- COMPANY INFO -->
@@ -357,7 +360,8 @@
                                                 {% for i, r in stonk_media.parse_news().iterrows() %}
                                                 <tr>
                                                     <td>
-                                                        <a href="{{ r.get('Article Link') }}">{{ r.get('News Headline') }}</a>
+                                                        <a href="{{ r.get('Article Link') }}">{{ r.get('News Headline')
+                                                            }}</a>
                                                     </td>
                                                 </tr>
                                                 {% endfor %}
@@ -373,10 +377,6 @@
             </div>
         </div><!-- /MEDIA INFO -->
     </div>
-</div>
-</div>
-</div>
-</div>
 </div>
 
 

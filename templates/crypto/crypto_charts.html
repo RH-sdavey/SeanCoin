@@ -1,9 +1,36 @@
 {% extends 'base.html' %}
 
+{% set crypto_long_name = crypto_obj.fundamentals_data['summaryProfile']['name'] %}
 {% block mainTitleSpan %}
-<h1>Crypto Charts</h1>
-{% endblock %}
+<div>
+    <div class="row flex-row justify-content-start">
+        <div class="col-md-auto">
+            <img src="{{ crypto_obj.logo }}" style="width:5em; height:5em;" class="card-img" alt="...">
+        </div>
+        <div class="col-lg-4">
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between"><i
+                        class="bi bi-info-circle me-1 text-success"></i>
+                    <a href="{{ url_for('crypto_info', crypto_name=crypto_name) }}" role="button">{{
+                        crypto_long_name|capitalize
+                        }}
+                        Information</a>
+                    <i class="bi bi-dash-square-dotted me-1 text-success"></i>
+                </li>
+                <li class="list-group-item  d-flex justify-content-between "><i
+                        class="bi bi-bar-chart me-1 text-success"></i>
+                    <a href="{{ url_for('crypto_charts', crypto_name=crypto_name) }}" role="button">{{
+                        crypto_long_name|capitalize }}
+                        Charts</a>
+                    <i class="bi bi-check-square-fill me-1 text-success"></i>
+                </li>
+            </ul>
+        </div>
 
+    </div>
+</div>
+
+{% endblock %}
 
 {% block crumbs %}
 {% endblock %}
@@ -13,10 +40,11 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">{{ data['name'] }} Since 2020</h5>
+                <h5 class="card-title">{{ crypto_obj.name }}</h5>
                 <div id="priceChart"></div>
                 <div id="volumeChart"></div>
                 <div id="diffChart"></div>
+                <div id="timechart"></div>
             </div>
         </div>
     </div>
@@ -28,11 +56,11 @@
     document.addEventListener("DOMContentLoaded", () => {
         const series = {
             "coin": {
-              "dates": {{ data['date_range']|safe }},
-              "name": "{{ data['name'] }}",
-              "prices": {{ data['close'] }},
-              "volume": {{ data['volume'] }},
-              "open_close_diff": {{ data['diff']|safe }}
+              "dates": {{ crypto_obj.price_history['date_range']|safe }},
+              "name": "{{ crypto_obj.name }}",
+              "prices": {{ crypto_obj.price_history['close'] }},
+              "volume": {{ crypto_obj.price_history['volume'] }},
+              "open_close_diff": {{ crypto_obj.price_history['diff']|safe }}
             }
         }
         <!-- PRICE CHART -->

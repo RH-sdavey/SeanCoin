@@ -433,3 +433,23 @@ new ApexCharts(document.querySelector("#yearlyEarningsRevenueChart"), {
         categories: chart_data.dates.y_dates
     },
 }).render();
+
+
+
+new ApexCharts(document.querySelector("#recommendationChart"), {
+labels: chart_data.latest_rec.rec,
+        series: chart_data.latest_rec.count,
+        chart: {
+          type: 'polarArea',
+          height: 350,
+          toolbar: {
+            show: true
+          }
+        },
+        stroke: {
+          colors: ['#fff']
+        },
+        fill: {
+          opacity: 0.8
+        }
+      }).render();

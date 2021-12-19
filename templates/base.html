@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>SeanCoin</title>
+    <title>SeanBase</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -26,7 +26,7 @@
         <i class="bi bi-list toggle-sidebar-btn" style="margin-right:2em"></i>
         <a href="{{ url_for('index') }}" class="logo d-flex align-items-center">
             <img src="{{ url_for('static', filename='assets/img/logo.png') }}" alt="">
-            <span class="d-none d-lg-block">SeanThereum</span>
+            <span class="d-none d-lg-block">SeanBase</span>
         </a>
     </div>
     <div style="margin-left:28em" class="d-flex align-items-right justify-content-between">
@@ -37,7 +37,7 @@
 <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
 
-        <!-- BLOCK EXPLORER -->
+        <!-- BLOCK -->
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#explorer-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-grid"></i>
@@ -57,9 +57,9 @@
                 </li>
             </ul>
         </li>
-        <!-- /BLOCK EXPLORER -->
+        <!-- /BLOCK-->
 
-        <!-- CRYPTO CHARTS -->
+        <!-- CRYPTO -->
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#crypto-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-grid"></i>
@@ -69,7 +69,7 @@
             <ul id="crypto-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 {% for k, v in all_crypto.items() %}
                 <li>
-                    <a href="{{ url_for('coin_charts', coin=v|string) }}">
+                    <a href="{{ url_for('crypto_info', crypto_name=v|string) }}">
                         <i class="bi bi-circle"></i><span>{{ k|safe }}</span>
                     </a>
                 </li>
@@ -77,9 +77,9 @@
 
             </ul>
         </li>
-        <!-- /CRYPTO CHARTS -->
+        <!-- /CRYPTO -->
 
-        <!-- STONK CHARTS -->
+        <!-- STONK -->
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#stonk-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-grid"></i>
@@ -87,41 +87,20 @@
                 <i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="stonk-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                {% for stonk_name in all_stonk %}
                 <li>
-                    <a href="{{ url_for('stonk_charts', stonk='GME') }}">
-                        <i class="bi bi-circle"></i><span>GME</span>
+                    <a href="{{ url_for('stonk_info', stonk_name=stonk_name) }}">
+                        <i class="bi bi-circle"></i><span>{{ stonk_name }}</span>
                     </a>
                 </li>
-                <li>
-                    <a href="{{ url_for('stonk_charts', stonk='AMC') }}">
-                        <i class="bi bi-circle"></i><span>AMC</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ url_for('stonk_charts', stonk='BB') }}">
-                        <i class="bi bi-circle"></i><span>BB</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ url_for('stonk_charts', stonk='KOSS') }}">
-                        <i class="bi bi-circle"></i><span>KOSS</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ url_for('stonk_charts', stonk='BBBY') }}">
-                        <i class="bi bi-circle"></i><span>BBBY</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ url_for('stonk_charts', stonk='HOOD') }}">
-                        <i class="bi bi-circle"></i><span>HOOD</span>
-                    </a>
-                </li>
+                {% endfor %}
             </ul>
         </li>
-        <!-- /STONK CHARTS -->
+        <!-- /STONK -->
     </ul>
 </aside>
+
+
 <main id="main" class="main">
     <div class="pagetitle">
         {% block mainTitleSpan %}
