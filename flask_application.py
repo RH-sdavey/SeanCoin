@@ -33,7 +33,7 @@ def index(num_blocks=5):
     all_n_blocks = [dict(item) for item in last_n]
     total_transactions, all_n_blocks = calc_perc_of_transactions(all_n_blocks)
     return render_template(
-        'latest-blocks.html',
+        'block/latest-blocks.html',
         data=all_n_blocks,
         total_transactions=total_transactions,
         total_val=calc_val_of_all_transactions_in_blocks(all_n_blocks),
@@ -54,7 +54,7 @@ def block_page(page):
     txs = block['transactions']
     try:
         return render_template(
-            'block.html',
+            'block/block.html',
             block_obj=block,
             txs=txs,
             normalize_balance=normalize_balance,
@@ -75,7 +75,7 @@ def txs_page(page, tx):
     for transaction in block['transactions']:
         if transaction['transactionIndex'] == tx:
             return render_template(
-                'transactions.html',
+                'block/transactions.html',
                 txs=transaction,
                 value=normalize_balance(transaction['value'])
             )
@@ -85,7 +85,7 @@ def txs_page(page, tx):
 def account(account):
     account_obj = Account(bc, account)
     return render_template(
-        'account.html',
+        'block/account.html',
         account=account_obj.account,
         balance=normalize_balance(account_obj.balance)
     )
@@ -96,7 +96,7 @@ def coin_charts(coin):
     # pass_dict = pandas_price_data(coin, crypto=True)
     return "ok"
     # return render_template(
-    #     "crypto_charts.html",
+    #     "crypto/crypto_charts.html",
     #     data=pass_dict
     # )
 
@@ -105,7 +105,7 @@ def coin_charts(coin):
 def stonk_charts(stonk):
     stonk_obj = Stonk(stonk)
     return render_template(
-        "stonk_charts.html",
+        "stonk/stonk_charts.html",
         stonk_obj=stonk_obj,
         stonk=stonk,
         getattr=getattr
@@ -122,21 +122,10 @@ def stonk_info(stonk):
 
     s_media = StonkMedia(stonk)
     return render_template(
-        "company_info.html",
+        "stonk/stonk_info.html",
         stonk=stonk,
         stonk_obj=stonk_obj,
-        insiders=s_media.parse_insiders_from_html()
-    )
-
-
-@seanCoin.route("/stonk_media/<stonk>")
-def stonk_media(stonk):
-    s_media = StonkMedia(stonk)
-    return render_template(
-        "stonk_media.html",
-        stonk=stonk,
-        news=s_media.parse_news_from_html(),
-        insiders=s_media.parse_insiders_from_html()
+        stonk_media=s_media,
     )
 
 

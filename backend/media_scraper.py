@@ -16,7 +16,7 @@ class StonkMedia:
         data = page.content
         return BeautifulSoup(data, 'html.parser')
 
-    def parse_news_from_html(self):
+    def parse_news(self):
         if not self.html:
             self.html = self.scrape_page_html()
         news = pd.read_html(str(self.html), attrs={'class': 'fullview-news-outer'})[0]
@@ -29,7 +29,7 @@ class StonkMedia:
         news = news.set_index('Date')
         return news
 
-    def parse_insiders_from_html(self):
+    def parse_insiders(self):
         if not self.html:
             self.html = self.scrape_page_html()
         insider = pd.read_html(str(self.html), attrs={'class': 'body-table'})[0]

@@ -14,11 +14,6 @@
                 <a href="{{ url_for('stonk_charts', stonk=stonk) }}" role="button">{{ stonk|capitalize }} Charts</a>
                 <i class="bi bi-dash-square-dotted me-1 text-success"></i>
             </li>
-            <li class="list-group-item  d-flex justify-content-between "><i
-                    class="bi bi-newspaper me-1 text-success"></i>
-                <a href="{{ url_for('stonk_media', stonk=stonk) }}" role="button">{{ stonk|capitalize }} Media</a>
-                <i class="bi bi-dash-square-dotted me-1 text-success"></i>
-            </li>
         </ul>
     </div>
 </div>
@@ -56,6 +51,10 @@
                         <button class="nav-link" id="v-pills-Financials-tab" data-bs-toggle="pill"
                                 data-bs-target="#v-pills-Financials" type="button" role="tab"
                                 aria-controls="v-pills-Financials" aria-selected="false">Financials
+                        </button>
+                        <button class="nav-link" id="v-pills-Media-tab" data-bs-toggle="pill"
+                                data-bs-target="#v-pills-Media" type="button" role="tab"
+                                aria-controls="v-pills-Media" aria-selected="false">Media
                         </button>
                     </div>
 
@@ -202,13 +201,13 @@
                                             <table class="table datatable">
                                                 <thead>
                                                 <tr>
-                                                    {% for column in insiders.columns %}
+                                                    {% for column in stonk_media.parse_insiders().columns %}
                                                     <th scope="col"> {{ column }}</th>
                                                     {% endfor %}
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                {% for row in insiders.iterrows() %}
+                                                {% for row in stonk_media.parse_insiders().iterrows() %}
                                                 <tr>
                                                     {% for item in row[1] %}
                                                     <td>{{ item }}</td>
@@ -228,6 +227,27 @@
                              aria-labelledby="v-pills-Financials-tab">
                             <div class="row">
                                 <div class="col-md-5">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Financial info</h5>
+                                            <table class="table datatable">
+                                                <thead>
+                                                <tr>
+                                                    <th scope="col">Key</th>
+                                                    <th scope="col">Value</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for key, value in stonk_obj.financials.items() %}
+                                                <tr>
+                                                    <td>{{ key }}</td>
+                                                    <td>{{ value }}</td>
+                                                </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                     <div class="card">
                                         <div class="card-body">
                                             <h5 class="card-title">Yearly Revenue</h5>
@@ -256,21 +276,89 @@
                                             {% endfor %}
                                         </div>
                                     </div>
-                                    <div class="card info-card sales-card">
+                                </div>
+                                <div class="card col-lg-7">
+                                    <div class="card-body">
+                                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link active" id="pills-BalanceSheet-tab"
+                                                        data-bs-toggle="pill" data-bs-target="#pills-BalanceSheet"
+                                                        type="button" role="tab" aria-controls="pills-BalanceSheet"
+                                                        aria-selected="true">BalanceSheet
+                                                </button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link" id="pills-Quarterly-tab" data-bs-toggle="pill"
+                                                        data-bs-target="#pills-Quarterly" type="button" role="tab"
+                                                        aria-controls="pills-Quarterly" aria-selected="false">Quarterly
+                                                    Balance Sheet
+                                                </button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link" id="pills-CashFlow-tab" data-bs-toggle="pill"
+                                                        data-bs-target="#pills-CashFlow" type="button" role="tab"
+                                                        aria-controls="pills-CashFlow" aria-selected="false">CashFlow
+                                                </button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link" id="pills-QuartFinance-tab"
+                                                        data-bs-toggle="pill"
+                                                        data-bs-target="#pills-QuartFinance" type="button" role="tab"
+                                                        aria-controls="pills-QuartFinance" aria-selected="false">
+                                                    Quarterly
+                                                    Financials
+                                                </button>
+                                            </li>
+                                        </ul>
+                                        <div class="tab-content pt-2" id="myTabContent">
+                                            <div class="tab-pane fade show active" id="pills-BalanceSheet"
+                                                 role="tabpanel"
+                                                 aria-labelledby="BalanceSheet-tab">
+                                                {{ stonk_obj.balance_sheet.to_html(classes=["table-bordered",
+                                                "table-striped", "table-hover"])|safe }}
+                                            </div>
+                                            <div class="tab-pane fade" id="pills-Quarterly" role="tabpanel"
+                                                 aria-labelledby="Quarterly-tab">
+                                                {{ stonk_obj.quarterly_balance_sheet.to_html(classes=["table-bordered",
+                                                "table-striped", "table-hover"])|safe }}
+                                            </div>
+                                            <div class="tab-pane fade" id="pills-CashFlow" role="tabpanel"
+                                                 aria-labelledby="CashFlow-tab">
+                                                {{ stonk_obj.cashflow.to_html(classes=["table-bordered",
+                                                "table-striped",
+                                                "table-hover"])|safe }}
+                                            </div>
+                                            <div class="tab-pane fade" id="pills-QuartFinance" role="tabpanel"
+                                                 aria-labelledby="QuartFinance-tab">
+                                                {{ stonk_obj.quarterly_financials.to_html(classes=["table-bordered",
+                                                "table-striped", "table-hover"])|safe }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /FINANCIALS INFO -->
+                        <!-- MEDIA INFO -->
+                        <div class="col-md-12 tab-pane fade" id="v-pills-Media" role="tabpanel"
+                             aria-labelledby="v-pills-Media-tab">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card">
                                         <div class="card-body">
-                                            <h5 class="card-title">Financial info</h5>
+                                            <h5 class="card-title">Latest {{ stonk }} Articles</h5>
                                             <table class="table datatable">
                                                 <thead>
                                                 <tr>
-                                                    <th scope="col">Key</th>
-                                                    <th scope="col">Value</th>
+                                                    <th scope="col">Link</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                {% for key, value in stonk_obj.financials.items() %}
+                                                {% for i, r in stonk_media.parse_news().iterrows() %}
                                                 <tr>
-                                                    <td>{{ key }}</td>
-                                                    <td>{{ value }}</td>
+                                                    <td>
+                                                        <a href="{{ r.get('Article Link') }}">{{ r.get('News Headline') }}</a>
+                                                    </td>
                                                 </tr>
                                                 {% endfor %}
                                                 </tbody>
@@ -278,67 +366,17 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-7">
-                                    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                                        <li class="nav-item" role="presentation">
-                                            <button class="nav-link active" id="pills-BalanceSheet-tab"
-                                                    data-bs-toggle="pill" data-bs-target="#pills-BalanceSheet"
-                                                    type="button" role="tab" aria-controls="pills-BalanceSheet"
-                                                    aria-selected="true">BalanceSheet
-                                            </button>
-                                        </li>
-                                        <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="pills-Quarterly-tab" data-bs-toggle="pill"
-                                                    data-bs-target="#pills-Quarterly" type="button" role="tab"
-                                                    aria-controls="pills-Quarterly" aria-selected="false">Quarterly
-                                                Balance Sheet
-                                            </button>
-                                        </li>
-                                        <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="pills-CashFlow-tab" data-bs-toggle="pill"
-                                                    data-bs-target="#pills-CashFlow" type="button" role="tab"
-                                                    aria-controls="pills-CashFlow" aria-selected="false">CashFlow
-                                            </button>
-                                        </li>
-                                        <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="pills-QuartFinance-tab" data-bs-toggle="pill"
-                                                    data-bs-target="#pills-QuartFinance" type="button" role="tab"
-                                                    aria-controls="pills-QuartFinance" aria-selected="false">Quarterly
-                                                Financials
-                                            </button>
-                                        </li>
-                                    </ul>
-                                    <div class="tab-content pt-2" id="myTabContent">
-                                        <div class="tab-pane fade show active" id="pills-BalanceSheet" role="tabpanel"
-                                             aria-labelledby="BalanceSheet-tab">
-                                            {{ stonk_obj.balance_sheet.to_html(classes=["table-bordered",
-                                            "table-striped", "table-hover"])|safe }}
-                                        </div>
-                                        <div class="tab-pane fade" id="pills-Quarterly" role="tabpanel"
-                                             aria-labelledby="Quarterly-tab">
-                                            {{ stonk_obj.quarterly_balance_sheet.to_html(classes=["table-bordered",
-                                            "table-striped", "table-hover"])|safe }}
-                                        </div>
-                                        <div class="tab-pane fade" id="pills-CashFlow" role="tabpanel"
-                                             aria-labelledby="CashFlow-tab">
-                                            {{ stonk_obj.cashflow.to_html(classes=["table-bordered", "table-striped",
-                                            "table-hover"])|safe }}
-                                        </div>
-                                        <div class="tab-pane fade" id="pills-QuartFinance" role="tabpanel"
-                                             aria-labelledby="QuartFinance-tab">
-                                            {{ stonk_obj.quarterly_financials.to_html(classes=["table-bordered",
-                                            "table-striped", "table-hover"])|safe }}
-                                        </div>
-                                    </div>
-
-                                </div>
                             </div>
-                        </div><!-- /FINANCIALS INFO -->
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </div><!-- /MEDIA INFO -->
     </div>
+</div>
+</div>
+</div>
+</div>
 </div>
 
 
