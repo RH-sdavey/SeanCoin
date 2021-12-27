@@ -100,12 +100,12 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <h5 class="card-title">Dividends History</h5>
-                                            {% for index, dividend in stonk_obj.dividends.iterrows() %}
+                                            {% for time, amount in stonk_obj.dividends.items() %}
                                             <div class="activity">
                                                 <div class="activity-item d-flex">
                                                     <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
-                                                    <div class="activity-label">{{ dividend['Date'] }}</div>
-                                                    <div class="activity-content">{{ dividend['Dividends'] }}</div>
+                                                    <div class="activity-label">{{ time }}</div>
+                                                    <div class="activity-content">{{ amount }}</div>
                                                 </div>
                                             </div>
                                             {% endfor %}
@@ -317,23 +317,23 @@
                                             <div class="tab-pane fade show active" id="pills-BalanceSheet"
                                                  role="tabpanel"
                                                  aria-labelledby="BalanceSheet-tab">
-                                                {{ stonk_obj.balance_sheet.to_html(classes=["table-bordered",
+                                                {{ stonk_obj.yf_stonk.balance_sheet.to_html(classes=["table-bordered",
                                                 "table-striped", "table-hover"])|safe }}
                                             </div>
                                             <div class="tab-pane fade" id="pills-Quarterly" role="tabpanel"
                                                  aria-labelledby="Quarterly-tab">
-                                                {{ stonk_obj.quarterly_balance_sheet.to_html(classes=["table-bordered",
+                                                {{ stonk_obj.yf_stonk.quarterly_balance_sheet.to_html(classes=["table-bordered",
                                                 "table-striped", "table-hover"])|safe }}
                                             </div>
                                             <div class="tab-pane fade" id="pills-CashFlow" role="tabpanel"
                                                  aria-labelledby="CashFlow-tab">
-                                                {{ stonk_obj.cashflow.to_html(classes=["table-bordered",
+                                                {{ stonk_obj.yf_stonk.cashflow.to_html(classes=["table-bordered",
                                                 "table-striped",
                                                 "table-hover"])|safe }}
                                             </div>
                                             <div class="tab-pane fade" id="pills-QuartFinance" role="tabpanel"
                                                  aria-labelledby="QuartFinance-tab">
-                                                {{ stonk_obj.quarterly_financials.to_html(classes=["table-bordered",
+                                                {{ stonk_obj.yf_stonk.quarterly_financials.to_html(classes=["table-bordered",
                                                 "table-striped", "table-hover"])|safe }}
                                             </div>
                                         </div>

@@ -1,5 +1,4 @@
-import yfinance_ez as yf
-
+import pandas as pd
 
 
 def normalize_balance(balance: str) -> str:
@@ -29,15 +28,18 @@ def calc_val_of_all_transactions_in_blocks(list_of_blocks):
 
 def calc_perc_of_transactions(list_of_blocks):
     total_txs = sum([len(block['transactions']) for block in list_of_blocks])
-    for item in list_of_blocks:
-        txs_len = len(item['transactions'])
+    for block in list_of_blocks:
+        txs_len = len(block['transactions'])
         try:
-            item['perc_of_total_trans'] = (txs_len / total_txs) * 100
+            block['perc_of_total_trans'] = (txs_len / total_txs) * 100
         except ZeroDivisionError:
-            item['perc_of_total_trans'] = 0
+            block['perc_of_total_trans'] = 0
     return total_txs, list_of_blocks
 
 
-
+def fix_dataframe(d):
+    d = d.reset_index(level=[0])
+    d['Date'] = pd.to_datetime(d['Date']).apply(lambda x: x.date())
+    return d
 
 

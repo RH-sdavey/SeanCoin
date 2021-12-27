@@ -23,6 +23,7 @@
 
 
 {% block crumbs %}
+
 {% endblock %}
 
 {% block body %}
@@ -113,8 +114,12 @@
         "name": "{{ stonk_obj.name|string }}",
         "dates": {
             "range": {{ stonk_obj.price_history['date_range']|safe }},
-            "q_dates": {{ stonk_obj.financial_data['q_dates']|safe }},
-            "y_dates": {{ stonk_obj.financial_data['y_dates']|safe }},
+            "q_dates": {{ stonk_obj.q_financial_data['date']|safe }},
+            "y_dates": {{ stonk_obj.y_financial_data['date']|safe }},
+        },
+        "spy": {
+            "name": "{{ spy.name|string }}",
+            "prices": {{ spy.price_history['close'] }},
         },
         "price_vol_diff": {
             "prices": {{ stonk_obj.price_history['close'] }},
@@ -127,15 +132,15 @@
             "fiftyTwoLow": {{ stonk_obj.yf_stonk.info.fiftyTwoWeekLow }},
         },
         "earnings": {
-            "est_earnings": {{ stonk_obj.financial_data['q_est_earn'] }},
-            "earnings": {{ stonk_obj.financial_data['q_earn'] }},
-            "actual_earnings": {{ stonk_obj.financial_data['q_actual_earn'] }},
-            "q_earn" : {{ stonk_obj.financial_data['q_date_earn']|safe }},
-            "y_earn" : {{ stonk_obj.financial_data['y_earn'] }},
+            "est_earnings": {{ stonk_obj.q_earnings_data['estimate'] }},
+            "earnings": {{ stonk_obj.q_financial_data['earnings'] }},
+            "actual_earnings": {{ stonk_obj.q_earnings_data['actual'] }},
+            "q_earn" : {{ stonk_obj.q_earnings_data['date']|safe }},
+            "y_earn" : {{ stonk_obj.y_financial_data['earnings'] }},
         },
         "revenue": {
-            "revenue": {{ stonk_obj.financial_data['q_rev'] }},
-            "y_revenue": {{ stonk_obj.financial_data['y_rev'] }},
+            "revenue": {{ stonk_obj.q_financial_data['revenue'] }},
+            "y_revenue": {{ stonk_obj.y_financial_data['revenue'] }},
         },
         "latest_rec": {
             "rec": {{ stonk_obj.parse_latest_recs().keys()|list|safe }},

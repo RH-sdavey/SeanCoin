@@ -45,10 +45,17 @@ const common_chart_config = {
 };
     <!--PRICE CHART-- >
 new ApexCharts(document.querySelector("#priceChart"), {
-    series: [{
-        name: chart_data.name,
-        data: chart_data.price_vol_diff.prices
-    }],
+    series: [
+        {
+            name: chart_data.name,
+            type: 'area',
+            data: chart_data.price_vol_diff.prices
+        }, {
+            name: chart_data.spy.name,
+            type: "line",
+            data: chart_data.spy.prices
+        }
+    ],
     subtitle: {
         align: 'left',
         text: "Price"

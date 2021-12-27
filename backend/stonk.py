@@ -1,12 +1,15 @@
 import datetime as dt
 
-import pandas as pd
 import yfinance_ez as yf
 
+from backend.backend import fix_dataframe
 from backend.lib import (
     company_columns, current_stock_columns, historical_stock_columns,
     financials_columns, holders_columns, logo_columns
 )
+
+earnings_keys = ["estimate", "actual", "date"]
+financial_keys = ['date', 'revenue', 'earnings']
 
 
 class Stonk:
@@ -15,50 +18,41 @@ class Stonk:
         self.yf_stonk = yf.Ticker(self.name)
         self.hist = self.yf_stonk.get_history(period=yf.TimePeriods.FiveYears)
         self.price_history = self.price_history()
-        self.actions = self.fix_dataframe(self.yf_stonk.actions)
-        self.financial_data = self.get_financial_data()
-        self.dividends = self.fix_dataframe(self.yf_stonk.dividends)
-        self.splits = self.yf_stonk.splits.to_dict()
-        self.earnings = self.yf_stonk.earnings.to_dict()
-        self.balance_sheet = self.yf_stonk.balance_sheet
-        self.quarterly_balance_sheet = self.yf_stonk.quarterly_balance_sheet
-        self.quarterly_financials = self.yf_stonk.quarterly_financials
-        self.cashflow = self.yf_stonk.cashflow
-        self.company_data = {column: self.yf_stonk.info[column] for column in company_columns}
-        self.current_stock = {column: self.yf_stonk.info[column] for column in current_stock_columns}
-        self.historical_stock = {column: self.yf_stonk.info[column] for column in historical_stock_columns}
-        self.financials = {column: self.yf_stonk.info[column] for column in financials_columns}
-        self.holders = {column: self.yf_stonk.info[column] for column in holders_columns}
-        self.logo = {column: self.yf_stonk.info[column] for column in logo_columns}
+        try:
+            self.q_earnings_data = {
+                key: [item[key] for item in self.yf_stonk.financials_data['earnings']['earningsChart']['quarterly']]
+                for key in earnings_keys
+            }
+            self.q_financial_data = {
+                key: [item[key] for item in self.yf_stonk.financials_data['earnings']['financialsChart']['quarterly']]
+                for key in financial_keys
+            }
+            self.y_financial_data = {
+                key: [item[key] for item in self.yf_stonk.financials_data['earnings']['financialsChart']['yearly']]
+                for key in financial_keys
+            }
+
+            self.dividends = self.yf_stonk.dividends.to_dict()
+            self.splits = self.yf_stonk.splits.to_dict()
+            self.earnings = self.yf_stonk.earnings.to_dict()
+            self.company_data = {column: self.yf_stonk.info[column] for column in company_columns}
+            self.current_stock = {column: self.yf_stonk.info[column] for column in current_stock_columns}
+            self.historical_stock = {column: self.yf_stonk.info[column] for column in historical_stock_columns}
+            self.financials = {column: self.yf_stonk.info[column] for column in financials_columns}
+            self.holders = {column: self.yf_stonk.info[column] for column in holders_columns}
+            self.logo = {column: self.yf_stonk.info[column] for column in logo_columns}
+        except KeyError:
+            pass
 
     def __eq__(self, other):
         return self.name == other.name
-
-    @staticmethod
-    def fix_dataframe(d):
-        d = d.reset_index(level=[0])
-        d['Date'] = pd.to_datetime(d['Date']).apply(lambda x: x.date())
-        return d
-
-    def get_financial_data(self):
-        return {
-            "q_dates": [item['date'] for item in self.yf_stonk.financials_data['earnings']['financialsChart']['quarterly']],
-            "q_rev": [item['revenue'] for item in self.yf_stonk.financials_data['earnings']['financialsChart']['quarterly']],
-            "q_earn": [item['earnings'] for item in self.yf_stonk.financials_data['earnings']['financialsChart']['quarterly']],
-            "y_dates": [item['date'] for item in self.yf_stonk.financials_data['earnings']['financialsChart']['yearly']],
-            "y_rev": [item['revenue'] for item in self.yf_stonk.financials_data['earnings']['financialsChart']['yearly']],
-            "y_earn": [item['earnings'] for item in self.yf_stonk.financials_data['earnings']['financialsChart']['yearly']],
-            "q_est_earn": [item['estimate'] for item in self.yf_stonk.financials_data['earnings']['earningsChart']['quarterly']],
-            "q_actual_earn": [item['actual'] for item in self.yf_stonk.financials_data['earnings']['earningsChart']['quarterly']],
-            "q_date_earn": [item['date'] for item in self.yf_stonk.financials_data['earnings']['earningsChart']['quarterly']],
-        }
 
     def price_history(self) -> dict:
         dec_place = 2
         start = dt.datetime(2019, 1, 1)
         end = dt.datetime.now()
         data = self.yf_stonk.get_history(start=start, end=end)
-        data = self.fix_dataframe(data)
+        data = fix_dataframe(data)
 
         open_price = [round(item, dec_place) for item in data['Open'].to_list()]
         close = [round(item, dec_place) for item in data['Close'].to_list()]
@@ -88,3 +82,8 @@ class Stonk:
                 'Firm', keep='last'
             ).groupby('To Grade').count().to_dict()['Action']
         )
+
+class MarketTicker(Stonk):
+
+    def __init__(self, stonk: str):
+        super().__init__(stonk)

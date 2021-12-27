@@ -64,14 +64,14 @@ class Block:
         return self.block[item]
 
     def get_block(self, full_transactions=True):
-        """assigns one block instance to self.block, defaults to latest block in the blockchain
+        """assigns one block instance to self.block, defaults to the latest block in the blockchain
         because self is returned, can be used as a chained-method eg: instance.get_blocks.do_something()
         :return: self
         """
         self.block_lookup = int(self.block_lookup) if self.block_lookup != "latest" else self.block_lookup
         obj = dict(self.blockchain.web3.eth.get_block(block_identifier=self.block_lookup,
                                                       full_transactions=full_transactions))
-        # pattern used here --> jsonloads(json.dumps(cls=HexJsonEncoder)) because some of the nested values used
+        # pattern used here --> jsonloads(json.dumps(cls=HexJsonEncoder)) because some nested values used
         # in a block dict object are complicated hashes that are not dealt with well by json library.
         # json.dumps(attributeDict) (uses HexJsonEncoder as a metaclass to resolve the hashes) -> str
         # json.loads(str) -> dict

@@ -1,8 +1,8 @@
 import datetime as dt
-import pandas as pd
 import yfinance_ez as yf
-
 from flask import url_for
+
+from backend.backend import fix_dataframe
 
 
 class Crypto:
@@ -18,18 +18,12 @@ class Crypto:
     def __eq__(self, other):
         return self.name == other.name
 
-    @staticmethod
-    def fix_dataframe(d):
-        d = d.reset_index(level=[0])
-        d['Date'] = pd.to_datetime(d['Date']).apply(lambda x: x.date())
-        return d
-
     def price_history(self) -> dict:
         dec_place = 2
         start = dt.datetime(2019, 1, 1)
         end = dt.datetime.now()
         data = self.yf_crypto.get_history(start=start, end=end)
-        data = self.fix_dataframe(data)
+        data = fix_dataframe(data)
 
         open_price = [round(item, dec_place) for item in data['Open'].to_list()]
         close = [round(item, dec_place) for item in data['Close'].to_list()]
@@ -48,16 +42,3 @@ class Crypto:
             "diff": diff,
             "date_range": date_range,
         }
-
-
-
-    # def scrape_logo(self):
-    #     logo_dict = {
-    #         "LRC-USD": ("loopring", "lrc"),
-    #         "BTC-USD": ("bitcoin", "btc")
-    #     }
-    #     url = f"https://cryptologos.cc/logos/{logo_dict[self.name][0]}-{logo_dict[self.name][1]}-logo.png"
-    #     img_data = requests.get(url).content
-    #     with open(url_for('static', filename=f'assets/img/{self.name}'), 'wb+') as handler:
-    #         handler.write(img_data)
-    #     return url_for('static', filename=f'assets/img/{self.name}')

@@ -1,13 +1,13 @@
 import datetime
 
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template
 
 from werkzeug.routing import BuildError
 from web3.exceptions import BlockNotFound
 
 from backend import lib
 from backend.media_scraper import StonkMedia
-from backend.stonk import Stonk
+from backend.stonk import Stonk, MarketTicker
 from backend.crypto import Crypto
 from backend.blockchain import BlockChain, Account
 from backend.backend import (
@@ -121,10 +121,12 @@ def crypto_info(crypto_name):
 @seanCoin.route("/stonk-charts/<stonk_name>")
 def stonk_charts(stonk_name):
     stonk_obj = Stonk(stonk_name)
+    spy = MarketTicker("SPY")
     return render_template(
         "stonk/stonk_charts.html",
         stonk_obj=stonk_obj,
         stonk=stonk_name,
+        spy=spy,
         getattr=getattr
     )
 
