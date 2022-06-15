@@ -56,34 +56,35 @@ class Stonk:
 
         open_price = [round(item, dec_place) for item in data['Open'].to_list()]
         close = [round(item, dec_place) for item in data['Close'].to_list()]
-        # high = [round(item, dec_place) for item in data['High'].to_list()]
-        # low = [round(item, dec_place) for item in data['Low'].to_list()]
+        high = [round(item, dec_place) for item in data['High'].to_list()]
+        low = [round(item, dec_place) for item in data['Low'].to_list()]
         volume = [round(item, dec_place) for item in data['Volume'].to_list()]
         diff = [round(cl - op, dec_place) for op, cl in list(zip(open_price, close))]
+        high_low_diff = [round(high - low, dec_place) for high, low in list(zip(high, low))]
         date_range = [item.strftime('%d %b %Y') for item in data['Date']]
 
         return {
             "name": self.name,
             "open": open_price,
             "close": close,
-            # "high": high,
-            # "low": low,
+            "high": high,
+            "low": low,
             "volume": volume,
             "diff": diff,
+            "high_low_diff": high_low_diff,
             "date_range": date_range,
         }
 
     def parse_latest_recs(self):
-        d = self.yf_stonk.recommendations
         return dict(
-            d.sort_values(
+            self.yf_stonk.recommendations.sort_values(
                 ['Firm', 'Date']
             ).drop_duplicates(
                 'Firm', keep='last'
             ).groupby('To Grade').count().to_dict()['Action']
         )
 
-class MarketTicker(Stonk):
 
+class MarketTicker(Stonk):
     def __init__(self, stonk: str):
         super().__init__(stonk)

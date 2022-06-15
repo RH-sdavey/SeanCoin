@@ -8,7 +8,7 @@ td {
 
 body {
   font-family: "Open Sans", sans-serif;
-  background: #f6f9ff;
+  background: #D7E6F5;
   color: #444444;
 }
 
@@ -234,14 +234,15 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "Poppins", sans-serif;
 }
 .card-title span {
-  color: #899bbd;
   font-size: 14px;
   font-weight: 400;
 }
 
 .card-body {
   padding: 0 20px 20px 20px;
+  background-color: #E1ECF8;
 }
+
 
 .card-img-overlay {
   background-color: rgba(255, 255, 255, 0.6);
@@ -535,7 +536,7 @@ h1, h2, h3, h4, h5, h6 {
   top: 60px;
   left: -300px;
   bottom: 0;
-  width: 180px;
+  width: 280px;
   z-index: 996;
   transition: all 0.3s;
   padding: 20px;

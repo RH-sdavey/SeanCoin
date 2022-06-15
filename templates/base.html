@@ -67,14 +67,18 @@
                 <i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="crypto-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <ul>
+                    <form method="POST" action="{{ url_for('crypto_search') }}">
+                        <input width="1rem" type="text" placeholder="eg: LRC or LRC-USD" name="crypto_name"/>
+                    </form>
+                </ul>
                 {% for k, v in all_crypto.items() %}
                 <li>
-                    <a href="{{ url_for('crypto_info', crypto_name=v|string) }}">
+                    <a href="{{ url_for('crypto', crypto_name=v|string) }}">
                         <i class="bi bi-circle"></i><span>{{ k|safe }}</span>
                     </a>
                 </li>
                 {% endfor %}
-
             </ul>
         </li>
         <!-- /CRYPTO -->
@@ -87,9 +91,16 @@
                 <i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="stonk-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <ul>
+                    <form method="POST" action="{{ url_for('stonk_search') }}">
+                      <div class="form-group">
+                        <input id="stonk_search" name="stonk_name" placeholder="Enter stonk name">
+                      </div>
+                    </form>
+                </ul>
                 {% for stonk_name in all_stonk %}
                 <li>
-                    <a href="{{ url_for('stonk_info', stonk_name=stonk_name) }}">
+                    <a href="{{ url_for('stonk', stonk_name=stonk_name) }}">
                         <i class="bi bi-circle"></i><span>{{ stonk_name }}</span>
                     </a>
                 </li>

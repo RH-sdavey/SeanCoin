@@ -1,9 +1,10 @@
 import datetime
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request, url_for
 
 from werkzeug.routing import BuildError
 from web3.exceptions import BlockNotFound
+from werkzeug.utils import redirect
 
 from backend import lib
 from backend.media_scraper import StonkMedia
@@ -96,43 +97,27 @@ def account(account):
     )
 
 
-@seanCoin.route("/crypto-charts/<crypto_name>")
-def crypto_charts(crypto_name):
+@seanCoin.route('/crypto/<crypto_name>')
+def crypto(crypto_name):
     crypto_obj = Crypto(crypto_name)
     return render_template(
-        "crypto/crypto_charts.html",
-        crypto_obj=crypto_obj,
-        crypto_name=crypto_name,
-    )
-
-
-@seanCoin.route("/crypto-info/<crypto_name>")
-def crypto_info(crypto_name):
-    crypto_obj = Crypto(crypto_name)
-
-    return render_template(
-        "crypto/crypto_info.html",
+        "crypto.html",
         crypto_obj=crypto_obj,
         crypto_name=crypto_name,
         type=type
-    )
+)
 
 
-@seanCoin.route("/stonk-charts/<stonk_name>")
-def stonk_charts(stonk_name):
-    stonk_obj = Stonk(stonk_name)
-    spy = MarketTicker("SPY")
-    return render_template(
-        "stonk/stonk_charts.html",
-        stonk_obj=stonk_obj,
-        stonk=stonk_name,
-        spy=spy,
-        getattr=getattr
-    )
+@seanCoin.route('/crypto_search', methods=['POST'])
+def crypto_search():
+    crypto_name = request.form['crypto_name']
+    if not crypto_name.endswith('-USD'):
+        crypto_name += '-USD'
+    return redirect(url_for('crypto', crypto_name=crypto_name))
 
 
-@seanCoin.route("/stonk_info/<stonk_name>")
-def stonk_info(stonk_name):
+@seanCoin.route("/stonk/<stonk_name>")
+def stonk(stonk_name):
     stonk_obj = Stonk(stonk_name)
     if not lib.stonk_object:
         lib.stonk_object = stonk_obj
@@ -140,12 +125,23 @@ def stonk_info(stonk_name):
         lib.stonk_object = stonk_obj
 
     s_media = StonkMedia(stonk_name)
+    spy = MarketTicker("SPY")
     return render_template(
-        "stonk/stonk_info.html",
+        "stonk.html",
         stonk=stonk_name,
         stonk_obj=stonk_obj,
         stonk_media=s_media,
+        spy=spy,
+        getattr=getattr
     )
+
+
+@seanCoin.route('/stonk_search', methods=['POST'])
+def stonk_search():
+    stonk_name = request.form['stonk_name']
+    return redirect(url_for('stonk', stonk_name=stonk_name))
+
+
 
 
 if __name__ == '__main__':

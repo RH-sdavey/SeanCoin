@@ -4,7 +4,6 @@ const percentToValue = (val) => Math.round(val * maxValue) / 100
 const fiftyTwoWeekmaxValue = chart_data.price_vol_diff.fiftyTwoHigh;
 
 const chart_config = {
-
     "chart": {
         "chart": {
             toolbar: {
@@ -460,3 +459,20 @@ labels: chart_data.latest_rec.rec,
           opacity: 0.8
         }
       }).render();
+
+    <!--DAILY HIGH/LOW DIFF CHART-- >
+new ApexCharts(document.querySelector("#highLowDiffChart"), {
+    series: [
+        {
+            name: chart_data.name,
+            type: 'area',
+            data: chart_data.price_vol_diff.high_low_diff
+        }
+    ],
+    subtitle: {
+        align: 'left',
+        text: "Daily High/Low Price Diff",
+    },
+    ...common_chart_config
+}).render();
+<!--/PRICE CHART -->

@@ -12,7 +12,7 @@ class Crypto:
         self.hist = self.yf_crypto.get_history(period=yf.TimePeriods.FiveYears)
         self.financials_data = self.yf_crypto.financials_data
         self.fundamentals_data = self.yf_crypto.fundamentals_data
-        self.logo = url_for('static', filename=f"assets/img/crypto_logos/{self.name}.png")
+        # self.logo = url_for('static', filename=f"assets/img/crypto_logos/{self.name}.png")
         self.price_history = self.price_history()
 
     def __eq__(self, other):

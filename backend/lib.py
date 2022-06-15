@@ -57,19 +57,11 @@ all_crypto = {
     "eth": "ETH-USD",
     "btc": 'BTC-USD',
     "lrc": 'LRC-USD',
-    "bnb": 'BNB-USD',
-    "usdt": 'USDT-USD',
-    "sol": 'SOL1-USD',
-    "ada": 'ADA-USD',
-    "dot": 'DOT1-USD',
     "doge": 'DOGE-USD',
     "shib": 'SHIB-USD',
-    "ltc": 'LTC-USD',
-    "matic": 'MATIC-USD',
-    "mana": 'MANA-USD',
 }
 
-all_stonk = ["GME", "AMC", "BB", "KOSS", "BBBY", "HOOD"]
+all_stonk = ["GME", "AMC", "BB", "KOSS", "BBBY", "TSLA"]
 
 
 stonk_object = None
