@@ -142,13 +142,5 @@ def stonk_search():
     return redirect(url_for('stonk', stonk_name=stonk_name))
 
 
-
-
 if __name__ == '__main__':
-    # This is a nasty workaround...why am I doing this?
-    import shutil
-    shutil.copy(
-        src=r'/app/venv/Lib/site-packages/yfinance_ez/base.py',
-        dst=r'/app/.heroku/python/lib/python3.10/site-packages/yfinance_ez/base.py'
-    )
     seanCoin.run(debug=False)
