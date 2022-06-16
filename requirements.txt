@@ -48,7 +48,7 @@ soupsieve
 toolz
 urllib3
 varint
-web3
+web3==5.29.2
 websockets
 Werkzeug
 yarl
