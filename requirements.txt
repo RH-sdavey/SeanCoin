@@ -40,8 +40,6 @@ protobuf
 pycryptodome
 pyrsistent
 python-dateutil
-pytz
-pywin32
 requests
 rlp
 six
