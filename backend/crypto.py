@@ -1,6 +1,5 @@
 import datetime as dt
-import yfinance_ez as yf
-from flask import url_for
+import backend.yfinance_ez as yf
 
 from backend.backend import fix_dataframe
 

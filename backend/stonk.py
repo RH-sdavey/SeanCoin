@@ -1,6 +1,6 @@
 import datetime as dt
 
-import yfinance_ez as yf
+import backend.yfinance_ez as yf
 
 from backend.backend import fix_dataframe
 from backend.lib import (
