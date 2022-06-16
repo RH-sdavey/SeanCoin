@@ -21,6 +21,7 @@ eth-typing
 eth-utils
 Flask
 frozenlist
+gunicorn
 hexbytes
 idna
 ipfshttpclient
