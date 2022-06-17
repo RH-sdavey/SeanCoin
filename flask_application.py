@@ -64,8 +64,6 @@ def block_page(page):
             block_obj=block,
             txs=txs,
             normalize_balance=normalize_balance,
-            block_hash=block['hash'],
-            block_number=block['number'],
             next_disabled=next_disabled,
             trans_len=len(txs),
             fromtimestamp=datetime.datetime.fromtimestamp,
