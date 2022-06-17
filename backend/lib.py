@@ -54,11 +54,11 @@ logo_columns = [
     'logo_url'
 ]
 all_crypto = {
-    "eth": "ETH-USD",
-    "btc": 'BTC-USD',
-    "lrc": 'LRC-USD',
-    "doge": 'DOGE-USD',
-    "shib": 'SHIB-USD',
+    "ETH": "ETH-USD",
+    "BTC": 'BTC-USD',
+    "LRC": 'LRC-USD',
+    "DOGE": 'DOGE-USD',
+    "SHIB": 'SHIB-USD',
 }
 
 all_stonk = ["GME", "AMC", "BB", "KOSS", "BBBY", "TSLA"]
