@@ -35,8 +35,7 @@ def all_stonk():
 @seanCoin.route('/index.html')
 @seanCoin.route('/index.html/<int:num_blocks>')
 def index(num_blocks=5):
-    last_n = bc.block_factory().get_last_n_blocks(num_blocks)
-    all_n_blocks = [dict(item) for item in last_n]
+    all_n_blocks = [dict(item) for item in bc.block_factory().get_last_n_blocks(num_blocks)]
     total_transactions, all_n_blocks = calc_perc_of_transactions(all_n_blocks)
     return render_template(
         'block/latest-blocks.html',
@@ -55,22 +54,19 @@ def block_page(page):
     try:
         block = bc.block_factory(page).get_block()
     except BlockNotFound:
-        return render_template('ohno.html')
+        return ohno_page()
     next_disabled = True if latest_block.block['number'] < block.block['number'] else False
-    txs = block['transactions']
     try:
         return render_template(
             'block/block.html',
             block_obj=block,
-            txs=txs,
             normalize_balance=normalize_balance,
             next_disabled=next_disabled,
-            trans_len=len(txs),
             fromtimestamp=datetime.datetime.fromtimestamp,
             strftime=datetime.datetime.strftime
         )
     except BuildError:
-        return render_template('ohno.html')
+        return ohno_page()
 
 
 @seanCoin.route('/block/<int:page>/transactions/<int:tx>')
@@ -116,14 +112,15 @@ def crypto_search():
 
 @seanCoin.route("/stonk/<stonk_name>")
 def stonk(stonk_name):
+    spy = MarketTicker("SPY")
+    s_media = StonkMedia(stonk_name)
     stonk_obj = Stonk(stonk_name)
+
     if not lib.stonk_object:
         lib.stonk_object = stonk_obj
     elif not lib.stonk_object == stonk_obj:
         lib.stonk_object = stonk_obj
 
-    s_media = StonkMedia(stonk_name)
-    spy = MarketTicker("SPY")
     return render_template(
         "stonk.html",
         stonk=stonk_name,
@@ -138,6 +135,10 @@ def stonk(stonk_name):
 def stonk_search():
     stonk_name = request.form['stonk_name']
     return redirect(url_for('stonk', stonk_name=stonk_name))
+
+
+def ohno_page():
+    return render_template('ohno.html')
 
 
 if __name__ == '__main__':

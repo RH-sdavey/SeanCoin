@@ -131,7 +131,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  {% for item in txs %}
+                  {% for item in block_obj.transactions %}
                   <tr>
                     <td><a href="/block/{{ block_obj.number }}/transactions/{{ item.transactionIndex }}" class="btn btn-info">Details</a></td>
                     <td><a href="{{ url_for('account', account=item.from) }}">{{ item.from|truncate(20) }}</a></td>
