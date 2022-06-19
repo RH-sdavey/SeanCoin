@@ -52,11 +52,13 @@
                                         role="tab" type="button">Stock
                                 </button>
                                 <button aria-controls="v-pills-Insiders" aria-selected="false" class="nav-link"
-                                        data-bs-target="#v-pills-Insiders" data-bs-toggle="pill" id="v-pills-Insiders-tab"
+                                        data-bs-target="#v-pills-Insiders" data-bs-toggle="pill"
+                                        id="v-pills-Insiders-tab"
                                         role="tab" type="button">Insiders
                                 </button>
                                 <button aria-controls="v-pills-Financials" aria-selected="false" class="nav-link"
-                                        data-bs-target="#v-pills-Financials" data-bs-toggle="pill" id="v-pills-Financials-tab"
+                                        data-bs-target="#v-pills-Financials" data-bs-toggle="pill"
+                                        id="v-pills-Financials-tab"
                                         role="tab" type="button">Financials
                                 </button>
                                 <button aria-controls="v-pills-Media" aria-selected="false" class="nav-link"
@@ -68,7 +70,8 @@
                             <!-- START OF CONTENTS -->
                             <!-- COMPANY INFO -->
                             <div class="tab-content" id="v-pills-tabContent">
-                                <div aria-labelledby="v-pills-Info-tab" class="col-md-12 tab-pane fade show active" id="v-pills-Info"
+                                <div aria-labelledby="v-pills-Info-tab" class="col-md-12 tab-pane fade show active"
+                                     id="v-pills-Info"
                                      role="tabpanel">
                                     <div class="col-md-11">
                                         <div class="card">
@@ -96,7 +99,8 @@
                                 </div>
                                 <!-- /COMPANY INFO -->
                                 <!-- STOCK INFO -->
-                                <div aria-labelledby="v-pills-Stock-tab" class="col-md-12 tab-pane fade" id="v-pills-Stock"
+                                <div aria-labelledby="v-pills-Stock-tab" class="col-md-12 tab-pane fade"
+                                     id="v-pills-Stock"
                                      role="tabpanel">
                                     <div class="row">
                                         <div class="col-md-3">
@@ -181,7 +185,8 @@
                                 <!-- /STOCK INFO -->
                                 <!-- INSIDERS INFO -->
 
-                                <div aria-labelledby="v-pills-Insiders-tab" class="col-md-12 tab-pane fade" id="v-pills-Insiders"
+                                <div aria-labelledby="v-pills-Insiders-tab" class="col-md-12 tab-pane fade"
+                                     id="v-pills-Insiders"
                                      role="tabpanel">
                                     <div class="row">
                                         <div class="col-md-3">
@@ -229,7 +234,8 @@
                                 </div>
                                 <!-- /INSIDERS INFO -->
                                 <!-- FINANCIALS INFO -->
-                                <div aria-labelledby="v-pills-Financials-tab" class="col-md-12 tab-pane fade" id="v-pills-Financials"
+                                <div aria-labelledby="v-pills-Financials-tab" class="col-md-12 tab-pane fade"
+                                     id="v-pills-Financials"
                                      role="tabpanel">
                                     <div class="row">
                                         <div class="col-md-5">
@@ -291,8 +297,8 @@
                                                                 class="nav-link active"
                                                                 data-bs-target="#pills-BalanceSheet"
                                                                 data-bs-toggle="pill" id="pills-BalanceSheet-tab"
-                                                                role="tab"
-                                                                type="button">BalanceSheet
+                                                                role="tab" type="button">
+                                                            BalanceSheet
                                                         </button>
                                                     </li>
                                                     <li class="nav-item" role="presentation">
@@ -301,8 +307,7 @@
                                                                 data-bs-target="#pills-Quarterly" data-bs-toggle="pill"
                                                                 id="pills-Quarterly-tab"
                                                                 role="tab" type="button">
-                                                            Quarterly
-                                                            Balance Sheet
+                                                            Quarterly Balance Sheet
                                                         </button>
                                                     </li>
                                                     <li class="nav-item" role="presentation">
@@ -317,41 +322,63 @@
                                                     <li class="nav-item" role="presentation">
                                                         <button aria-controls="pills-QuartFinance" aria-selected="false"
                                                                 class="nav-link"
-                                                                data-bs-target="#pills-QuartFinance" data-bs-toggle="pill"
+                                                                data-bs-target="#pills-QuartFinance"
+                                                                data-bs-toggle="pill"
                                                                 id="pills-QuartFinance-tab"
-                                                                role="tab"
-                                                                type="button">
-                                                            Quarterly
-                                                            Financials
+                                                                role="tab" type="button">
+                                                            Quarterly Financials
                                                         </button>
                                                     </li>
                                                 </ul>
                                                 <div class="tab-content pt-2" id="myTabContent">
-                                                    <div aria-labelledby="BalanceSheet-tab" class="tab-pane fade show active"
+                                                    <div aria-labelledby="BalanceSheet-tab"
+                                                         class="tab-pane fade show active"
                                                          id="pills-BalanceSheet"
                                                          role="tabpanel">
                                                         {{
-                                                        stonk_obj.yf_stonk.balance_sheet.to_html(classes=["table-bordered",
-                                                        "table-striped", "table-hover"])|safe }}
+                                                        stonk_obj.yf_stonk.balance_sheet.to_html(
+                                                            classes=[
+                                                                "table-bordered",
+                                                                "table-striped",
+                                                                "table-hover"
+                                                            ]
+                                                        )|safe }}
                                                     </div>
-                                                    <div aria-labelledby="Quarterly-tab" class="tab-pane fade" id="pills-Quarterly"
+                                                    <div aria-labelledby="Quarterly-tab" class="tab-pane fade"
+                                                         id="pills-Quarterly"
                                                          role="tabpanel">
                                                         {{
-                                                        stonk_obj.yf_stonk.quarterly_balance_sheet.to_html(classes=["table-bordered",
-                                                        "table-striped", "table-hover"])|safe }}
+                                                        stonk_obj.yf_stonk.quarterly_balance_sheet.to_html(
+                                                            classes=[
+                                                                "table-bordered",
+                                                                "table-striped",
+                                                                "table-hover"
+                                                            ]
+                                                        )|safe }}
                                                     </div>
-                                                    <div aria-labelledby="CashFlow-tab" class="tab-pane fade" id="pills-CashFlow"
+                                                    <div aria-labelledby="CashFlow-tab" class="tab-pane fade"
+                                                         id="pills-CashFlow"
                                                          role="tabpanel">
                                                         {{
-                                                        stonk_obj.yf_stonk.cashflow.to_html(classes=["table-bordered",
-                                                        "table-striped",
-                                                        "table-hover"])|safe }}
+                                                        stonk_obj.yf_stonk.cashflow.to_html(
+                                                            classes=[
+                                                                "table-bordered",
+                                                                "table-striped",
+                                                                "table-hover"
+                                                            ]
+                                                        )|safe }}
                                                     </div>
-                                                    <div aria-labelledby="QuartFinance-tab" class="tab-pane fade" id="pills-QuartFinance"
+                                                    <div aria-labelledby="QuartFinance-tab" class="tab-pane fade"
+                                                         id="pills-QuartFinance"
                                                          role="tabpanel">
                                                         {{
-                                                        stonk_obj.yf_stonk.quarterly_financials.to_html(classes=["table-bordered",
-                                                        "table-striped", "table-hover"])|safe }}
+                                                        stonk_obj.yf_stonk.quarterly_financials.to_html(
+                                                            classes=[
+                                                                "table-bordered",
+                                                                "table-striped",
+                                                                "table-hover"
+                                                            ]
+                                                        )|safe }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -360,7 +387,8 @@
                                 </div>
                                 <!-- /FINANCIALS INFO -->
                                 <!-- MEDIA INFO -->
-                                <div aria-labelledby="v-pills-Media-tab" class="col-md-12 tab-pane fade" id="v-pills-Media"
+                                <div aria-labelledby="v-pills-Media-tab" class="col-md-12 tab-pane fade"
+                                     id="v-pills-Media"
                                      role="tabpanel">
                                     <div class="row">
                                         <div class="col-md-12">
@@ -524,7 +552,6 @@
             "count": {{ stonk_obj.parse_latest_recs().values()|list }},
         }
     };
-
 
 
 </script>

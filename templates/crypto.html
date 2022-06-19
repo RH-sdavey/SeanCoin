@@ -7,7 +7,8 @@
 <div>
     <div class="row flex-row justify-content-start">
         <div class="col-md-auto">
-            <img src="/static/assets/img/crypto_logos/{{ crypto_obj.name }}.png" style="width:5em; height:5em;" class="card-img" alt="...">
+            <img alt="..." class="card-img"
+                 src="/static/assets/img/crypto_logos/{{ crypto_obj.name }}.png" style="width:5em; height:5em;">
         </div>
     </div>
 </div>
@@ -19,62 +20,68 @@
 
 {% block body %}
 <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-  <li class="nav-item" role="presentation">
-    <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
-        {{ crypto_obj.name }} Info</button>
-  </li>
-  <li class="nav-item" role="presentation">
-    <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">
-        {{ crypto_obj.name }} Charts</button>
-  </li>
+    <li class="nav-item" role="presentation">
+        <button aria-controls="pills-home" aria-selected="true" class="nav-link active" data-bs-target="#pills-home"
+                data-bs-toggle="pill" id="pills-home-tab" role="tab" type="button">
+            {{ crypto_obj.name }} Info
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button aria-controls="pills-profile" aria-selected="false" class="nav-link" data-bs-target="#pills-profile"
+                data-bs-toggle="pill" id="pills-profile-tab" role="tab" type="button">
+            {{ crypto_obj.name }} Charts
+        </button>
+    </li>
 </ul>
 <div class="tab-content" id="pills-tabContent">
-  <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+    <div aria-labelledby="pills-home-tab" class="tab-pane fade show active" id="pills-home" role="tabpanel">
 
-<div class="row">
-    <div class="col-lg-12">
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-lg-3">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-3">
 
-                    </div>
-                </div>
-                <div class="d-flex align-items-start">
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-start">
 
-                    <div class="tab-content" id="v-pills-tabContent">
-                        <div class="col-md-12 tab-pane fade show active" id="v-pills-Info" role="tabpanel"
-                             aria-labelledby="v-pills-Info-tab">
-                            <div class="col-md-11">
-                                <div class="row">
-                                    <h5 class="card-title">{{ crypto_long_name }} /({{ crypto_name }}) Info</h5>
-                                    {% for key, value in crypto_obj.fundamentals_data.items() %}
-                                    {% if value is mapping %}
-                                    <div class="card col-md-4">
-                                        <div class="card-body">
-                                            <h5 class="card-title">{{ key }}</h5>
-                                            <table class="table datatable">
-                                                <thead>
-                                                <tr>
-                                                    <th scope="col">Key</th>
-                                                    <th scope="col">Value</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                {% for in_key, in_value in value.items() %}
-                                                <tr>
-                                                    <td>{{ in_key }}</td>
-                                                    <td>{{ in_value }}</td>
-                                                </tr>
-                                                {% endfor %}
-                                                </tbody>
-                                            </table>
+                            <div class="tab-content" id="v-pills-tabContent">
+                                <div aria-labelledby="v-pills-Info-tab" class="col-md-12 tab-pane fade show active" id="v-pills-Info"
+                                     role="tabpanel">
+                                    <div class="col-md-11">
+                                        <div class="row">
+                                            <h5 class="card-title">{{ crypto_long_name }} /({{ crypto_name }}) Info</h5>
+                                            {% for key, value in crypto_obj.fundamentals_data.items() %}
+                                            {% if value is mapping %}
+                                            <div class="card col-md-4">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">{{ key }}</h5>
+                                                    <table class="table datatable">
+                                                        <thead>
+                                                        <tr>
+                                                            <th scope="col">Key</th>
+                                                            <th scope="col">Value</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        {% for in_key, in_value in value.items() %}
+                                                        <tr>
+                                                            <td>{{ in_key }}</td>
+                                                            <td>{{ in_value }}</td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            {% endif %}
+                                            {% endfor %}
                                         </div>
+                                        <!-- /COMPANY INFO -->
                                     </div>
-                                    {% endif %}
-                                    {% endfor %}
                                 </div>
-                                <!-- /COMPANY INFO -->
                             </div>
                         </div>
                     </div>
@@ -82,26 +89,23 @@
             </div>
         </div>
     </div>
-</div>
-  </div>
-  <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-      <div class="row">
-    <div class="col-lg-12">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">{{ crypto_obj.name }} Charts</h5>
-                <div id="priceChart"></div>
-                <div id="volumeChart"></div>
-                <div id="diffChart"></div>
-                <div id="timechart"></div>
+    <div aria-labelledby="pills-profile-tab" class="tab-pane fade" id="pills-profile" role="tabpanel">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ crypto_obj.name }} Charts</h5>
+                        <div id="priceChart"></div>
+                        <div id="volumeChart"></div>
+                        <div id="diffChart"></div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
 
-<script src="{{ url_for('static', filename='assets/vendor/apexcharts/apexcharts.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='assets/vendor/apexcharts/apexcharts.min.js') }}"></script>
 
-<script>
+        <script>
     document.addEventListener("DOMContentLoaded", () => {
         const series = {
             "coin": {
@@ -187,7 +191,7 @@
         }).render();
         <!-- /VOLUME CHART -->
         <!-- DIFF CHART -->
-        new ApexCharts(document.querySelector("#volumeChart"), {
+        new ApexCharts(document.querySelector("#diffChart"), {
           series: [
               {
                 name: series.coin.name,
@@ -224,7 +228,8 @@
         }).render();
     <!-- /DIFF CHART -->
     });
-</script>
-  </div>
+
+        </script>
+    </div>
 </div>
 {% endblock %}
